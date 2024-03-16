@@ -10,7 +10,7 @@ export abstract class Entity<Props = any> {
     this.props = props;
     this._id = id || uuidv4();
     this._created_at = created_at || this.toDate();
-    this._update_at = update_at || this.toDate()
+    this._update_at = update_at || this.toDate();
   }
 
   get id() {
@@ -25,19 +25,19 @@ export abstract class Entity<Props = any> {
     return this._update_at;
   }
 
-  toJSON(): Required<{ id: string, created_at: Date, update_at: Date } & Props> {
-
+  toJSON(): Required<
+    { id: string; created_at: Date; update_at: Date } & Props
+  > {
     return {
       id: this._id,
       ...this.props,
       created_at: this._created_at,
-      update_at: this._update_at
-    } as Required<{ id: string, created_at: Date, update_at: Date } & Props>;
-
+      update_at: this._update_at,
+    } as Required<{ id: string; created_at: Date; update_at: Date } & Props>;
   }
 
   toDate(): Date {
-    const newDate = new Date()
+    const newDate = new Date();
     newDate.setUTCHours(newDate.getUTCHours() - 3);
 
     return newDate;
