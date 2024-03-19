@@ -9,7 +9,7 @@ export class UserRules {
   name: string
 
   @IsBoolean()
-  @IsOptional()
+  @IsNotEmpty()
   isSeller: boolean
 
   @MaxLength(255)
