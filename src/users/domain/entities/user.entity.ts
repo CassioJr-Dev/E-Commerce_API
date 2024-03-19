@@ -5,6 +5,8 @@ export type UserProps = {
   isSeller: boolean;
   email: string;
   password: string;
+  created_at?: Date,
+  update_at?: Date
 };
 
 export class UserEntity extends Entity<UserProps> {
