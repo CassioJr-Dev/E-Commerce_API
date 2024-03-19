@@ -1,5 +1,5 @@
 import { UserProps } from "@/users/domain/entities/user.entity";
-import { UserValidator, UserValidatorFactory } from "../../user-validator";
+import { UserRules, UserValidator, UserValidatorFactory } from "../../user-validator";
 import { UserDataBuilder } from "@/users/domain/testing/helpers/user-data-builder";
 
 let sut: UserValidator
@@ -52,7 +52,6 @@ describe('UserValidator unit tests', () => {
     expect(sut.errors['isSeller']).toStrictEqual([
       'isSeller must be a boolean value'
     ])
-    console.log(sut.errors.isSeller)
   })
 
   it('Invalidation cases for email field', () => {
@@ -87,7 +86,7 @@ describe('UserValidator unit tests', () => {
     expect(sut.errors['password']).toStrictEqual([
       'password should not be empty',
       'password must be a string',
-      'password must be shorter than or equal to 12 characters'
+      'password must be shorter than or equal to 15 characters'
     ])
 
     isValid = sut.validate({ ...props, password: '' })
@@ -98,7 +97,13 @@ describe('UserValidator unit tests', () => {
     expect(isValid).toBeFalsy()
     expect(sut.errors['password']).toStrictEqual([
       'password must be a string',
-      'password must be shorter than or equal to 12 characters'
+      'password must be shorter than or equal to 15 characters'
     ])
+  })
+
+  it('Valid case for user rules', () => {
+    const isValid = sut.validate(props)
+    expect(isValid).toBeTruthy()
+    expect(sut.validatedData).toStrictEqual(new UserRules(props))
   })
 })
