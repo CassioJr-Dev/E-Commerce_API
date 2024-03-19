@@ -23,16 +23,8 @@ export class UserRules {
   @IsNotEmpty()
   password: string
 
-  @IsDate()
-  @IsOptional()
-  created_at: Date
-
-  @IsDate()
-  @IsOptional()
-  update_at: Date
-
-  constructor({ name, isSeller, email, password, created_at, update_at }: UserProps) {
-    Object.assign(this, { name, isSeller, email, password, created_at, update_at })
+  constructor({ name, isSeller, email, password }: UserProps) {
+    Object.assign(this, { name, isSeller, email, password })
   }
 }
 
