@@ -15,6 +15,7 @@ export class UserEntity extends Entity<UserProps> {
     created_at?: Date,
     update_at?: Date,
   ) {
+    UserEntity.validate(props)
     super(props, id, created_at, update_at);
   }
 

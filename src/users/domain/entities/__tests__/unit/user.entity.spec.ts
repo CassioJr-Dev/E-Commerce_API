@@ -5,11 +5,13 @@ describe('UserEntity unit tests', () => {
   let props: UserProps;
   let sut: UserEntity;
   beforeEach(() => {
+    UserEntity.validate = jest.fn()
     props = UserDataBuilder({});
     sut = new UserEntity(props);
   });
 
   it('Constructor method test', () => {
+    expect(UserEntity.validate).toHaveBeenCalled()
     expect(sut.props.name).toEqual(props.name);
     expect(sut.props.isSeller).toEqual(props.isSeller);
     expect(sut.props.email).toEqual(props.email);
@@ -59,9 +61,33 @@ describe('UserEntity unit tests', () => {
     expect(typeof sut.password).toBe('string');
   });
 
-  it('Setter of empasswordail field', () => {
+  it('Setter of password field', () => {
     sut['password'] = 'bill345gates';
     expect(sut.props.password).toEqual('bill345gates');
     expect(typeof sut.props.password).toBe('string');
   });
+
+  it('Should update the name field', () => {
+    sut.updateName('other name')
+    expect(UserEntity.validate).toHaveBeenCalled()
+    expect(sut.name).toEqual('other name')
+  })
+
+  it('Should update the isSeller field', () => {
+    sut.updateIsSeller(true)
+    expect(UserEntity.validate).toHaveBeenCalled()
+    expect(sut.isSeller).toBeTruthy()
+  })
+
+  it('Should update the email field', () => {
+    sut.updateEmail('emailtest@gmail.com')
+    expect(UserEntity.validate).toHaveBeenCalled()
+    expect(sut.email).toEqual('emailtest@gmail.com')
+  })
+
+  it('Should update the password field', () => {
+    sut.updatePassword('other password')
+    expect(UserEntity.validate).toHaveBeenCalled()
+    expect(sut.password).toEqual('other password')
+  })
 });
