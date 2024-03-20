@@ -111,4 +111,121 @@ describe('UserEntity integration tests', () => {
       expect(() => new UserEntity(props)).not.toThrowError(EntityValidationError)
     })
   })
+
+  describe('UpdateName method', () => {
+    let props: UserProps
+    let sut: UserEntity
+    let argument: any
+    beforeEach(() => {
+      props = UserDataBuilder({})
+      sut = new UserEntity(props)
+    })
+    it('Should throw an error when update a user with invalid name', () => {
+      argument = null
+      expect(() => sut.updateName(argument)).toThrowError(EntityValidationError)
+
+      argument = ''
+      expect(() => sut.updateName(argument)).toThrowError(EntityValidationError)
+
+      argument = 10
+      expect(() => sut.updateName(argument)).toThrowError(EntityValidationError)
+
+      argument = 'a'.repeat(256)
+      expect(() => sut.updateName(argument)).toThrowError(EntityValidationError)
+
+    })
+
+    it('Should valid user updateName', () => {
+      expect.assertions(1)
+      argument = UserDataBuilder({}).name
+      expect(() => sut.updateName(argument)).not.toThrowError(EntityValidationError)
+    })
+  })
+
+  describe('UpdateIsSeller method', () => {
+    let props: UserProps
+    let sut: UserEntity
+    let argument: any
+    beforeEach(() => {
+      props = UserDataBuilder({})
+      sut = new UserEntity(props)
+    })
+    it('Should throw an error when update a user with invalid name', () => {
+      argument = null
+      expect(() => sut.updateIsSeller(argument)).toThrowError(EntityValidationError)
+
+      argument = ''
+      expect(() => sut.updateIsSeller(argument)).toThrowError(EntityValidationError)
+
+      argument = 10
+      expect(() => sut.updateIsSeller(argument)).toThrowError(EntityValidationError)
+
+    })
+
+    it('Should valid user updateIsSeller', () => {
+      expect.assertions(1)
+      argument = UserDataBuilder({}).isSeller
+      expect(() => sut.updateIsSeller(argument)).not.toThrowError(EntityValidationError)
+    })
+  })
+
+  describe('UpdateEmail method', () => {
+    let props: UserProps
+    let sut: UserEntity
+    let argument: any
+    beforeEach(() => {
+      props = UserDataBuilder({})
+      sut = new UserEntity(props)
+    })
+    it('Should throw an error when update a user with invalid name', () => {
+      argument = null
+      expect(() => sut.updateEmail(argument)).toThrowError(EntityValidationError)
+
+      argument = ''
+      expect(() => sut.updateEmail(argument)).toThrowError(EntityValidationError)
+
+      argument = 10
+      expect(() => sut.updateEmail(argument)).toThrowError(EntityValidationError)
+
+      argument = 'a'.repeat(256)
+      expect(() => sut.updateEmail(argument)).toThrowError(EntityValidationError)
+
+    })
+
+    it('Should valid user updateEmail', () => {
+      expect.assertions(1)
+      argument = UserDataBuilder({}).email
+      expect(() => sut.updateEmail(argument)).not.toThrowError(EntityValidationError)
+    })
+  })
+
+  describe('UpdatePassword method', () => {
+    let props: UserProps
+    let sut: UserEntity
+    let argument: any
+    beforeEach(() => {
+      props = UserDataBuilder({})
+      sut = new UserEntity(props)
+    })
+    it('Should throw an error when update a user with invalid name', () => {
+      argument = null
+      expect(() => sut.updatePassword(argument)).toThrowError(EntityValidationError)
+
+      argument = ''
+      expect(() => sut.updatePassword(argument)).toThrowError(EntityValidationError)
+
+      argument = 10
+      expect(() => sut.updatePassword(argument)).toThrowError(EntityValidationError)
+
+      argument = 'a'.repeat((16))
+      expect(() => sut.updatePassword(argument)).toThrowError(EntityValidationError)
+
+    })
+
+    it('Should valid user updatePassword', () => {
+      expect.assertions(1)
+      argument = UserDataBuilder({}).password
+      expect(() => sut.updatePassword(argument)).not.toThrowError(EntityValidationError)
+    })
+  })
 })
