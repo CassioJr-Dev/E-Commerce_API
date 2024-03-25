@@ -1,18 +1,18 @@
-import { IsNotEmpty, IsNumber, IsString, MaxLength } from "class-validator"
-import { ClassValidatorFields } from "../../class-validator-fileds"
+import { IsNotEmpty, IsNumber, IsString, MaxLength } from 'class-validator';
+import { ClassValidatorFields } from '../../class-validator-fileds';
 
 class StubRules {
   @MaxLength(255)
   @IsString()
   @IsNotEmpty()
-  name: string
+  name: string;
 
   @IsNumber()
   @IsNotEmpty()
-  price: number
+  price: number;
 
   constructor(data: any) {
-    Object.assign(this, data)
+    Object.assign(this, data);
     // this.name = data.name
     // this.price = data.price
   }
@@ -20,15 +20,15 @@ class StubRules {
 
 class StubClassValidatorFields extends ClassValidatorFields<StubRules> {
   validate(data: any): boolean {
-    return super.validate(new StubRules(data))
+    return super.validate(new StubRules(data));
   }
 }
 
-describe('ClassValidatorFields integration tests', ()=> {
+describe('ClassValidatorFields integration tests', () => {
   it('Should validate with errors', () => {
-    const sut = new StubClassValidatorFields()
+    const sut = new StubClassValidatorFields();
 
-    expect(sut.validate(null)).toBeFalsy()
+    expect(sut.validate(null)).toBeFalsy();
     expect(sut.errors).toStrictEqual({
       name: [
         'name should not be empty',
@@ -39,15 +39,15 @@ describe('ClassValidatorFields integration tests', ()=> {
         'price should not be empty',
         'price must be a number conforming to the specified constraints',
       ],
-    })
-  })
+    });
+  });
 
   it('Should validate without errors', () => {
-    const sut = new StubClassValidatorFields()
+    const sut = new StubClassValidatorFields();
 
-    expect(sut.validate({ name: 'value', price: 10 })).toBeTruthy()
+    expect(sut.validate({ name: 'value', price: 10 })).toBeTruthy();
     expect(sut.validatedData).toStrictEqual(
       new StubRules({ name: 'value', price: 10 }),
-    )
-  })
-})
+    );
+  });
+});

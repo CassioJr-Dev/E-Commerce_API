@@ -1,6 +1,6 @@
-import { Entity } from "@/shared/domain/entities/entity";
-import { UserValidatorFactory } from "../validators/user-validator";
-import { EntityValidationError } from "@/shared/domain/errors/validation-error";
+import { Entity } from '@/shared/domain/entities/entity';
+import { UserValidatorFactory } from '../validators/user-validator';
+import { EntityValidationError } from '@/shared/domain/errors/validation-error';
 
 export type UserProps = {
   name: string;
@@ -16,39 +16,39 @@ export class UserEntity extends Entity<UserProps> {
     created_at?: Date,
     update_at?: Date,
   ) {
-    UserEntity.validate(props)
+    UserEntity.validate(props);
     super(props, id, created_at, update_at);
   }
 
   updateName(value: string): void {
     UserEntity.validate({
       ...this.props,
-      name: value
-    })
+      name: value,
+    });
     this.name = value;
   }
 
   updateIsSeller(value: boolean): void {
     UserEntity.validate({
       ...this.props,
-      isSeller: value
-    })
+      isSeller: value,
+    });
     this.isSeller = value;
   }
 
   updateEmail(value: string): void {
     UserEntity.validate({
       ...this.props,
-      email: value
-    })
+      email: value,
+    });
     this.email = value;
   }
 
   updatePassword(value: string): void {
     UserEntity.validate({
       ...this.props,
-      password: value
-    })
+      password: value,
+    });
     this.password = value;
   }
 
@@ -85,10 +85,10 @@ export class UserEntity extends Entity<UserProps> {
   }
 
   static validate(props: UserProps) {
-    const validator = UserValidatorFactory.create()
-    const isValidate = validator.validate(props)
-    if(!isValidate) {
-      throw new EntityValidationError(validator.errors)
+    const validator = UserValidatorFactory.create();
+    const isValidate = validator.validate(props);
+    if (!isValidate) {
+      throw new EntityValidationError(validator.errors);
     }
   }
 }
