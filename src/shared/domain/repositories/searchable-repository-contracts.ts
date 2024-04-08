@@ -13,18 +13,18 @@ export type SearchProps<Filter = string> = {
 
 export class SearchParams {
   protected _page: number;
-  protected _perpage = 15;
+  protected _perPage = 15;
   protected _sort: string | null;
   protected _sortDir: SortDirection | null;
   protected _filter: string | null;
 
-  constructor(props: SearchProps) {
+  constructor(props: SearchProps = {}) {
     //Object.assign(this, props )
-    this._page = props.page;
-    this._perpage = props.perpage;
-    this._sort = props.sort;
-    this._sortDir = props.sortDir;
-    this._filter = props.filter;
+    this.page = props.page;
+    this.perPage = props.perpage;
+    this.sort = props.sort;
+    this.sortDir = props.sortDir;
+    this.filter = props.filter;
   }
 
   get page() {
@@ -40,20 +40,19 @@ export class SearchParams {
   }
 
   get perPage() {
-    return this._perpage;
+    return this._perPage;
   }
 
   private set perPage(value: number) {
-    let _perpage = +value;
-
+    let _perPage = value === (true as any) ? this._perPage : +value;
     if (
-      Number.isNaN(_perpage) ||
-      _perpage <= 0 ||
-      parseInt(_perpage as any) !== _perpage
+      Number.isNaN(_perPage) ||
+      _perPage <= 0 ||
+      parseInt(_perPage as any) !== _perPage
     ) {
-      _perpage = 1;
+      _perPage = this._perPage;
     }
-    this._perpage = _perpage;
+    this._perPage = _perPage;
   }
 
   get sort() {
