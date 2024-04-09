@@ -13,7 +13,7 @@ export abstract class InMemorySearchableRepository<E extends Entity>
   sortableFields: string[] = [];
 
   async search(props: SearchParams): Promise<SearchResult<E>> {
-    const itemsFiltered = await this.applyfilter(this.items, props.filter);
+    const itemsFiltered = await this.applyFilter(this.items, props.filter);
 
     const itemsSorted = await this.applySort(
       itemsFiltered,
@@ -38,7 +38,7 @@ export abstract class InMemorySearchableRepository<E extends Entity>
     });
   }
 
-  protected abstract applyfilter(
+  protected abstract applyFilter(
     items: E[],
     filter: string | null,
   ): Promise<E[]>;
