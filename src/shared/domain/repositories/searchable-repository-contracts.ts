@@ -5,7 +5,7 @@ export type SortDirection = 'asc' | 'desc';
 
 export type SearchProps<Filter = string> = {
   page?: number;
-  perpage?: number;
+  perPage?: number;
   sort?: string | null;
   sortDir?: SortDirection | null;
   filter?: Filter | null;
@@ -30,7 +30,7 @@ export class SearchParams {
 
   constructor(props: SearchProps = {}) {
     this.page = props.page;
-    this.perPage = props.perpage;
+    this.perPage = props.perPage;
     this.sort = props.sort;
     this.sortDir = props.sortDir;
     this.filter = props.filter;

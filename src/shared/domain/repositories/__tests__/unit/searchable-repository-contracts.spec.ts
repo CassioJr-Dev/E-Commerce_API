@@ -48,7 +48,7 @@ describe('Searchable Repository unit tests', () => {
     ];
 
     params.forEach(i => {
-      expect(new SearchParams({ perpage: i.perPage }).perPage).toBe(i.expected);
+      expect(new SearchParams({ perPage: i.perPage }).perPage).toBe(i.expected);
     });
   });
 
