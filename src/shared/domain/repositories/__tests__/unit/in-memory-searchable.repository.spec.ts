@@ -301,19 +301,19 @@ describe('InMemorySearchableRepository unit tests', () => {
         new StubEntity({ name: 'a', price: 50 }),
         new StubEntity({ name: 'TEST', price: 50 }),
         new StubEntity({ name: 'e', price: 50 }),
-        new StubEntity({ name: 'TeSt', price: 50 })
-      ]
+        new StubEntity({ name: 'TeSt', price: 50 }),
+      ];
 
-      sut.items = items
+      sut.items = items;
 
       let params = await sut.search(
         new SearchParams({
           page: 1,
           perPage: 2,
           sort: 'name',
-          filter: 'TEST'
+          filter: 'TEST',
         }),
-      )
+      );
 
       expect(params).toStrictEqual(
         new SearchResult({
@@ -324,8 +324,8 @@ describe('InMemorySearchableRepository unit tests', () => {
           sort: 'name',
           sortDir: 'desc',
           filter: 'TEST',
-        })
-      )
+        }),
+      );
 
       params = await sut.search(
         new SearchParams({
@@ -334,7 +334,7 @@ describe('InMemorySearchableRepository unit tests', () => {
           sort: 'name',
           filter: 'TEST',
         }),
-      )
+      );
       expect(params).toStrictEqual(
         new SearchResult({
           items: [items[2]],
@@ -345,7 +345,7 @@ describe('InMemorySearchableRepository unit tests', () => {
           sortDir: 'desc',
           filter: 'TEST',
         }),
-      )
-    })
+      );
+    });
   });
 });
