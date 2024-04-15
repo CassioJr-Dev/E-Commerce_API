@@ -90,7 +90,7 @@ describe('UserValidator unit tests', () => {
     expect(sut.errors['password']).toStrictEqual([
       'password should not be empty',
       'password must be a string',
-      'password must be shorter than or equal to 15 characters',
+      'password must be shorter than or equal to 100 characters',
     ]);
 
     isValid = sut.validate({ ...props, password: '' });
@@ -103,7 +103,7 @@ describe('UserValidator unit tests', () => {
     expect(isValid).toBeFalsy();
     expect(sut.errors['password']).toStrictEqual([
       'password must be a string',
-      'password must be shorter than or equal to 15 characters',
+      'password must be shorter than or equal to 100 characters',
     ]);
   });
 

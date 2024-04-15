@@ -28,7 +28,7 @@ export namespace SignupUseCase {
 
     async execute(input: Input): Promise<Output> {
       const { name, isSeller = false, email, password } = input;
-      if (!name || !isSeller || !email || !password) {
+      if (!name || !email || !password) {
         throw new BadRequestError('Input data not provided');
       }
 
