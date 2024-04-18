@@ -97,7 +97,7 @@ describe('UserEntity integration tests', () => {
 
       props = {
         ...UserDataBuilder({}),
-        password: 'a'.repeat(16),
+        password: 'a'.repeat(101),
       };
       expect(() => new UserEntity(props)).toThrowError(EntityValidationError);
     });
@@ -249,7 +249,7 @@ describe('UserEntity integration tests', () => {
         EntityValidationError,
       );
 
-      argument = 'a'.repeat(16);
+      argument = 'a'.repeat(101);
       expect(() => sut.updatePassword(argument)).toThrowError(
         EntityValidationError,
       );
