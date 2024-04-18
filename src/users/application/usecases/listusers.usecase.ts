@@ -1,11 +1,11 @@
 import { UserRepository } from '@/users/domain/repositories/user.repository';
-import { SearchInput } from '../dto/search-input';
+import { SearchInput } from '../dtos/search-input';
 import { UseCase as DefaultUseCase } from './use-case';
 import {
   PaginationOutput,
   PaginationOutputMapper,
 } from '@/shared/application/dtos/pagination-output';
-import { UserOutput, UserOutputMapper } from '../dto/user-output';
+import { UserOutput, UserOutputMapper } from '../dtos/user-output';
 
 export namespace ListUserUseCase {
   export type Input = SearchInput;

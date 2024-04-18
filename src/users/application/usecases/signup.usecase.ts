@@ -2,7 +2,7 @@ import { HashProvider } from '@/shared/application/providers/hash-provider';
 import { BadRequestError } from '@/shared/domain/errors/bad-request-error';
 import { UserEntity } from '@/users/domain/entities/user.entity';
 import { UserRepository } from '@/users/domain/repositories/user.repository';
-import { UserOutput } from '../dto/user-output';
+import { UserOutput } from '../dtos/user-output';
 import { UseCase as DefaultUseCase } from './use-case';
 
 export namespace SignupUseCase {
