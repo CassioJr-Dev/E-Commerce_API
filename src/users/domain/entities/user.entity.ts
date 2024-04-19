@@ -26,6 +26,7 @@ export class UserEntity extends Entity<UserProps> {
       name: value,
     });
     this.name = value;
+    this.update_at = this.toDate();
   }
 
   updateIsSeller(value: boolean): void {
@@ -34,6 +35,7 @@ export class UserEntity extends Entity<UserProps> {
       isSeller: value,
     });
     this.isSeller = value;
+    this.update_at = this.toDate();
   }
 
   updateEmail(value: string): void {
@@ -42,6 +44,7 @@ export class UserEntity extends Entity<UserProps> {
       email: value,
     });
     this.email = value;
+    this.update_at = this.toDate();
   }
 
   updatePassword(value: string): void {
@@ -50,6 +53,7 @@ export class UserEntity extends Entity<UserProps> {
       password: value,
     });
     this.password = value;
+    this.update_at = this.toDate();
   }
 
   get name() {

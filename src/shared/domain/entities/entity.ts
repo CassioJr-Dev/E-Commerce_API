@@ -4,7 +4,7 @@ export abstract class Entity<Props = any> {
   public readonly _id: string;
   public readonly props: Props;
   public readonly _created_at: Date;
-  public readonly _update_at: Date;
+  public _update_at: Date;
 
   constructor(props: Props, id?: string, created_at?: Date, update_at?: Date) {
     this.props = props;
@@ -23,6 +23,10 @@ export abstract class Entity<Props = any> {
 
   get update_at() {
     return this._update_at;
+  }
+
+  set update_at(value: Date) {
+    this._update_at = value;
   }
 
   toJSON(): Required<
