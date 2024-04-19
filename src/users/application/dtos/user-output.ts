@@ -4,6 +4,7 @@ export type UserOutput = {
   id: string;
   name: string;
   isSeller: boolean;
+  email: string;
   password: string;
   created_at: Date;
   update_at: Date;
