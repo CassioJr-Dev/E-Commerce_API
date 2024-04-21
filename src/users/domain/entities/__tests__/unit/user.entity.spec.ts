@@ -16,7 +16,6 @@ describe('UserEntity unit tests', () => {
     expect(sut.props.isSeller).toEqual(props.isSeller);
     expect(sut.props.email).toEqual(props.email);
     expect(sut.props.password).toEqual(props.password);
-    console.log(props);
   });
 
   it('Getter of name field', () => {
@@ -68,25 +67,37 @@ describe('UserEntity unit tests', () => {
   });
 
   it('Should update the name field', () => {
+    const toDateSpy = jest.spyOn(sut, 'toDate');
     sut.updateName('other name');
+
+    expect(toDateSpy).toHaveBeenCalledTimes(1);
     expect(UserEntity.validate).toHaveBeenCalled();
     expect(sut.name).toEqual('other name');
   });
 
   it('Should update the isSeller field', () => {
+    const toDateSpy = jest.spyOn(sut, 'toDate');
     sut.updateIsSeller(true);
+
+    expect(toDateSpy).toHaveBeenCalledTimes(1);
     expect(UserEntity.validate).toHaveBeenCalled();
     expect(sut.isSeller).toBeTruthy();
   });
 
   it('Should update the email field', () => {
+    const toDateSpy = jest.spyOn(sut, 'toDate');
     sut.updateEmail('emailtest@gmail.com');
+
+    expect(toDateSpy).toHaveBeenCalledTimes(1);
     expect(UserEntity.validate).toHaveBeenCalled();
     expect(sut.email).toEqual('emailtest@gmail.com');
   });
 
   it('Should update the password field', () => {
+    const toDateSpy = jest.spyOn(sut, 'toDate');
     sut.updatePassword('other password');
+
+    expect(toDateSpy).toHaveBeenCalledTimes(1);
     expect(UserEntity.validate).toHaveBeenCalled();
     expect(sut.password).toEqual('other password');
   });
