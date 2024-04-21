@@ -1,6 +1,6 @@
 import { UserRepository } from '@/users/domain/repositories/user.repository';
 import { SearchInput } from '../dtos/search-input';
-import { UseCase as DefaultUseCase } from './use-case';
+import { UseCase as DefaultUseCase } from '../../../shared/application/usecases/use-case';
 import {
   PaginationOutput,
   PaginationOutputMapper,

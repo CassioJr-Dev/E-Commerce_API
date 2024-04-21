@@ -3,7 +3,7 @@ import { BadRequestError } from '@/shared/domain/errors/bad-request-error';
 import { UserEntity } from '@/users/domain/entities/user.entity';
 import { UserRepository } from '@/users/domain/repositories/user.repository';
 import { UserOutput, UserOutputMapper } from '../dtos/user-output';
-import { UseCase as DefaultUseCase } from './use-case';
+import { UseCase as DefaultUseCase } from '../../../shared/application/usecases/use-case';
 
 export namespace SignupUseCase {
   export type Input = {

@@ -1,6 +1,6 @@
 import { UserRepository } from '@/users/domain/repositories/user.repository';
 import { UserOutput, UserOutputMapper } from '../dtos/user-output';
-import { UseCase as DefaultUseCase } from './use-case';
+import { UseCase as DefaultUseCase } from '../../../shared/application/usecases/use-case';
 import { BadRequestError } from '@/shared/domain/errors/bad-request-error';
 
 export namespace UpdateUserUseCase {
