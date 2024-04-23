@@ -1,16 +1,16 @@
 import { UserInMemoryRepository } from '@/users/infrastructure/database/in-memory/repositories/user-in-memory.repository';
-import { ListUserUseCase } from '../../listusers.usecase';
+import { ListUsersUseCase } from '../../listusers.usecase';
 import { UserRepository } from '@/users/domain/repositories/user.repository';
 import { UserEntity } from '@/users/domain/entities/user.entity';
 import { UserDataBuilder } from '@/users/domain/testing/helpers/user-data-builder';
 
 describe('ListUsersUseCase unit tests', () => {
-  let sut: ListUserUseCase.UseCase;
+  let sut: ListUsersUseCase.UseCase;
   let repository: UserInMemoryRepository;
 
   beforeEach(() => {
     repository = new UserInMemoryRepository();
-    sut = new ListUserUseCase.UseCase(repository);
+    sut = new ListUsersUseCase.UseCase(repository);
   });
 
   it('toOutput method', () => {
