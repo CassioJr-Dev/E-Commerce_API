@@ -41,28 +41,28 @@ import { DeleteUserUseCase } from '../application/usecases/delete-user.usecase';
         userRepository: UserRepository.Repository,
         hashProvider: HashProvider,
       ) => {
-        return new SigninUseCase.UseCase(userRepository, hashProvider)
+        return new SigninUseCase.UseCase(userRepository, hashProvider);
       },
       inject: ['UserRepository', 'HashProvider'],
     },
     {
       provide: GetUserUseCase.UseCase,
       useFactory: (userRepository: UserRepository.Repository) => {
-        return new GetUserUseCase.UseCase(userRepository)
+        return new GetUserUseCase.UseCase(userRepository);
       },
       inject: ['UserRepository'],
     },
     {
       provide: ListUsersUseCase.UseCase,
       useFactory: (userRepository: UserRepository.Repository) => {
-        return new ListUsersUseCase.UseCase(userRepository)
+        return new ListUsersUseCase.UseCase(userRepository);
       },
       inject: ['UserRepository'],
     },
     {
       provide: UpdateUserUseCase.UseCase,
       useFactory: (userRepository: UserRepository.Repository) => {
-        return new UpdateUserUseCase.UseCase(userRepository)
+        return new UpdateUserUseCase.UseCase(userRepository);
       },
       inject: ['UserRepository'],
     },
@@ -72,17 +72,17 @@ import { DeleteUserUseCase } from '../application/usecases/delete-user.usecase';
         userRepository: UserRepository.Repository,
         hashProvider: HashProvider,
       ) => {
-        return new UpdatePasswordUseCase.UseCase(userRepository, hashProvider)
+        return new UpdatePasswordUseCase.UseCase(userRepository, hashProvider);
       },
       inject: ['UserRepository', 'HashProvider'],
     },
     {
       provide: DeleteUserUseCase.UseCase,
       useFactory: (userRepository: UserRepository.Repository) => {
-        return new DeleteUserUseCase.UseCase(userRepository)
+        return new DeleteUserUseCase.UseCase(userRepository);
       },
       inject: ['UserRepository'],
-    }
+    },
   ],
 })
 export class UsersModule {}
