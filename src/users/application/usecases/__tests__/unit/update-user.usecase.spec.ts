@@ -46,7 +46,7 @@ describe('UpdateUserUseCase unit tests', () => {
       isSeller: true,
       email: 'newemail@gmail.com',
       created_at: items[0].created_at,
-      update_at: items[0].update_at,
+      updated_at: items[0].updated_at,
     });
     console.log(result);
   });

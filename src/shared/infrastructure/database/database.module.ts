@@ -6,6 +6,6 @@ import { ConfigService } from '@nestjs/config';
 @Module({
   imports: [EnvConfigModule.forRoot()],
   providers: [ConfigService, PrismaService],
-  exports: [PrismaService]
+  exports: [PrismaService],
 })
 export class DatabaseModule {}

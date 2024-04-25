@@ -39,17 +39,17 @@ describe('Entity unit tests', () => {
       id,
       ...props,
       created_at: date,
-      update_at: date,
+      updated_at: date,
     });
 
     console.log(entity.toJSON());
   });
 
-  it('Should set created_at and update_at', () => {
+  it('Should set created_at and updated_at', () => {
     const props = { prop1: 'value1', prop2: 15 };
     const entity = new StubEntity(props);
 
     expect(entity._created_at).not.toBeNull();
-    expect(entity._update_at).not.toBeNull();
+    expect(entity._updated_at).not.toBeNull();
   });
 });

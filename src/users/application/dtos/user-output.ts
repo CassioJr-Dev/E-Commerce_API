@@ -7,7 +7,7 @@ export type UserOutput = {
   email: string;
   password: string;
   created_at: Date;
-  update_at: Date;
+  updated_at: Date;
 };
 
 export class UserOutputMapper {

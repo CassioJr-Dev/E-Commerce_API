@@ -24,7 +24,7 @@ describe('UsersController unit tests', () => {
       email: 'a@a.com',
       password: '1234',
       created_at: new Date(),
-      update_at: new Date(),
+      updated_at: new Date(),
     };
   });
 

@@ -14,10 +14,10 @@ export class UserEntity extends Entity<UserProps> {
     public readonly props: UserProps,
     id?: string,
     created_at?: Date,
-    update_at?: Date,
+    updated_at?: Date,
   ) {
     UserEntity.validate(props);
-    super(props, id, created_at, update_at);
+    super(props, id, created_at, updated_at);
   }
 
   updateName(value: string): void {
@@ -26,7 +26,7 @@ export class UserEntity extends Entity<UserProps> {
       name: value,
     });
     this.name = value;
-    this.update_at = this.toDate();
+    this.updated_at = this.toDate();
   }
 
   updateIsSeller(value: boolean): void {
@@ -35,7 +35,7 @@ export class UserEntity extends Entity<UserProps> {
       isSeller: value,
     });
     this.isSeller = value;
-    this.update_at = this.toDate();
+    this.updated_at = this.toDate();
   }
 
   updateEmail(value: string): void {
@@ -44,7 +44,7 @@ export class UserEntity extends Entity<UserProps> {
       email: value,
     });
     this.email = value;
-    this.update_at = this.toDate();
+    this.updated_at = this.toDate();
   }
 
   updatePassword(value: string): void {
@@ -53,7 +53,7 @@ export class UserEntity extends Entity<UserProps> {
       password: value,
     });
     this.password = value;
-    this.update_at = this.toDate();
+    this.updated_at = this.toDate();
   }
 
   get name() {

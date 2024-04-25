@@ -28,7 +28,7 @@ describe('SignupUseCase unit tests', () => {
     });
     console.log(result);
     expect(result.id).toBeDefined();
-    expect(result.created_at && result.update_at).toBeInstanceOf(Date);
+    expect(result.created_at && result.updated_at).toBeInstanceOf(Date);
     expect(spyInsert).toHaveBeenCalledTimes(1);
   });
 

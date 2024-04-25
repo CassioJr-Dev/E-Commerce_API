@@ -27,7 +27,7 @@ describe('GetUserUseCase unit tests', () => {
       email: items[0].email,
       password: items[0].password,
       created_at: items[0].created_at,
-      update_at: items[0].update_at,
+      updated_at: items[0].updated_at,
     });
   });
 });
