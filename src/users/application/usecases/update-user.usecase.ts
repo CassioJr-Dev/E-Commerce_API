@@ -18,22 +18,25 @@ export namespace UpdateUserUseCase {
     constructor(private userRepository: UserRepository.Repository) {}
 
     async execute(input: Input): Promise<Output> {
-      const entity = await this.userRepository.findById(input.id);
+      const { id, name, email, isSeller } = input
 
-      if(input.name) {
-        entity.updateName(input.name);
-      }
+      const isAllNull = !name && !email && typeof isSeller !== 'boolean'
 
-      if(input.isSeller === true || input.isSeller === false) {
-        entity.updateIsSeller(input.isSeller);
-      }
-
-      if(input.email) {
-        entity.updateEmail(input.email);
-      }
-
-      if(!input.name && !input.email && input.isSeller !== true && input.isSeller !== false) {
+      if(isAllNull) {
         throw new BadRequestError('No valid properties provided');
+      }
+
+      const entity = await this.userRepository.findById(id);
+
+      if(name) {
+        entity.updateName(name);
+      }
+      if(typeof isSeller === 'boolean') {
+        entity.updateIsSeller(isSeller);
+      }
+
+      if(email) {
+        email && entity.updateEmail(email);
       }
 
       await this.userRepository.update(entity);
