@@ -11,6 +11,7 @@ export namespace UpdateUserUseCase {
     email?: string;
   };
 
+
   export type Output = UserOutput;
 
   export class UseCase implements DefaultUseCase<Input, Output> {
@@ -19,19 +20,20 @@ export namespace UpdateUserUseCase {
     async execute(input: Input): Promise<Output> {
       const entity = await this.userRepository.findById(input.id);
 
-      switch (true) {
-        case !!input.name:
-          entity.updateName(input.name);
+      if(input.name) {
+        entity.updateName(input.name);
+      }
 
-        case !!input.isSeller:
-          entity.updateIsSeller(input.isSeller);
+      if(input.isSeller === true || input.isSeller === false) {
+        entity.updateIsSeller(input.isSeller);
+      }
 
-        case !!input.email:
-          entity.updateEmail(input.email);
-          break;
+      if(input.email) {
+        entity.updateEmail(input.email);
+      }
 
-        default:
-          throw new BadRequestError('No valid properties provided');
+      if(!input.name && !input.email && input.isSeller !== true && input.isSeller !== false) {
+        throw new BadRequestError('No valid properties provided');
       }
 
       await this.userRepository.update(entity);
