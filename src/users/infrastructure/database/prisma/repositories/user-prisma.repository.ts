@@ -13,11 +13,10 @@ export class UserPrismaRepository implements UserRepository.Repository {
   async findByEmail(email: string): Promise<UserEntity> {
     try {
       const user = await this.prismaService.user.findUnique({
-        where: { email }
-      })
+        where: { email },
+      });
 
-      return UserModelMapper.toEntity(user)
-
+      return UserModelMapper.toEntity(user);
     } catch {
       throw new NotFoundError(`UserModel not found usind email ${email}`);
     }
@@ -26,9 +25,9 @@ export class UserPrismaRepository implements UserRepository.Repository {
   async emailExists(email: string): Promise<void> {
     const user = await this.prismaService.user.findUnique({
       where: { email },
-    })
+    });
     if (user) {
-      throw new ConflictError(`Email address already used`)
+      throw new ConflictError(`Email address already used`);
     }
   }
 
