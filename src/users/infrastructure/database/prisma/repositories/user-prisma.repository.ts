@@ -78,18 +78,21 @@ export class UserPrismaRepository implements UserRepository.Repository {
   }
 
   async update(entity: UserEntity): Promise<void> {
-    await this._get(entity.id)
+    await this._get(entity.id);
 
     await this.prismaService.user.update({
       data: entity.toJSON(),
       where: {
-        id: entity.id
-      }
+        id: entity.id,
+      },
     });
   }
 
-  delete(id: string): Promise<void> {
-    throw new Error('Method not implemented.');
+  async delete(id: string): Promise<void> {
+    await this._get(id);
+    await this.prismaService.user.delete({
+      where: { id },
+    });
   }
 
   protected async _get(id: string): Promise<UserEntity> {
