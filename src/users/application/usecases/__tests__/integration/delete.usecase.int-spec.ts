@@ -1,19 +1,18 @@
 import { PrismaClient } from '@prisma/client';
-import { SignupUseCase } from '../../signup.usecase';
 import { UserPrismaRepository } from '@/users/infrastructure/database/prisma/repositories/user-prisma.repository';
 import { Test, TestingModule } from '@nestjs/testing';
-import { HashProvider } from '@/shared/application/providers/hash-provider';
 import { setupPrismaTests } from '@/users/infrastructure/database/prisma/testing/setup-prisma-tests';
 import { DatabaseModule } from '@/shared/infrastructure/database/database.module';
-import { BcryptjsHashProvider } from '@/users/infrastructure/providers/hash-provider/bcryptjs-hash.provider';
 import { UserDataBuilder } from '@/users/domain/testing/helpers/user-data-builder';
+import { DeleteUserUseCase } from '../../delete-user.usecase';
+import { NotFoundError } from '@/shared/domain/errors/not-found-error';
+import { UserEntity } from '@/users/domain/entities/user.entity';
 
 describe('SignupUseCase integration tests', () => {
   const prismaService = new PrismaClient();
-  let sut: SignupUseCase.UseCase;
+  let sut: DeleteUserUseCase.UseCase;
   let repository: UserPrismaRepository;
   let module: TestingModule;
-  let hashProvider: HashProvider;
 
   beforeAll(async () => {
     setupPrismaTests();
@@ -22,11 +21,10 @@ describe('SignupUseCase integration tests', () => {
     }).compile();
 
     repository = new UserPrismaRepository(prismaService as any);
-    hashProvider = new BcryptjsHashProvider();
   });
 
   beforeEach(async () => {
-    sut = new SignupUseCase.UseCase(repository, hashProvider);
+    sut = new DeleteUserUseCase.UseCase(repository);
     await prismaService.user.deleteMany();
   });
 
@@ -35,13 +33,26 @@ describe('SignupUseCase integration tests', () => {
     module.close;
   });
 
-  it('Should create a user', async () => {
-    const props = {
-      ...UserDataBuilder({}),
-    };
-    const output = await sut.execute(props);
-    expect(output.id).toBeDefined();
-    expect(output.created_at).toBeInstanceOf(Date);
-    expect(output.updated_at).toBeInstanceOf(Date);
+  it('Should throws error when entity not found', async () => {
+    await expect(() => sut.execute({ id: 'fakeId' })).rejects.toThrow(
+      new NotFoundError('UserModel not found using ID fakeId'),
+    );
+  });
+
+  it('Should delete a user', async () => {
+    const entity = new UserEntity(UserDataBuilder({}));
+    const newUser = await prismaService.user.create({
+      data: entity.toJSON(),
+    });
+    await sut.execute({ id: entity.id });
+
+    const output = await prismaService.user.findUnique({
+      where: {
+        id: entity.id,
+      },
+    });
+    expect(output).toBeNull();
+    const models = await prismaService.user.findMany();
+    expect(models).toHaveLength(0);
   });
 });
