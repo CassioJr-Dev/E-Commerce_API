@@ -34,7 +34,8 @@ describe('SigninUseCase integration tests', () => {
   });
 
   afterAll(async () => {
-    await module.close();
+    await prismaService.user.deleteMany();
+    module.close();
   });
 
   it('Should not be able to authenticate with wrong email', async () => {

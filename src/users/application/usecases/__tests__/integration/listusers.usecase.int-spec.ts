@@ -24,7 +24,8 @@ describe('ListUsersUseCase integration tests', () => {
     await prismaService.user.deleteMany();
   });
   afterAll(async () => {
-    await module.close();
+    await prismaService.user.deleteMany();
+    module.close();
   });
   it('Should return the users ordered by created_at', async () => {
     const created_at = new Date();

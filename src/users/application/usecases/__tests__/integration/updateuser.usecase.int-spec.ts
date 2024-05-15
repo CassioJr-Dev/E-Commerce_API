@@ -28,7 +28,8 @@ describe('UpdateUserUseCase integration tests', () => {
   });
 
   afterAll(async () => {
-    await module.close();
+    await prismaService.user.deleteMany();
+    module.close();
   });
 
   it('Should throws error when entity not found', async () => {

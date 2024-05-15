@@ -33,7 +33,8 @@ describe('UpdatePasswordUseCase integration tests', () => {
   });
 
   afterAll(async () => {
-    await module.close();
+    await prismaService.user.deleteMany();
+    module.close();
   });
 
   it('Should throws error when a entity found by id', async () => {

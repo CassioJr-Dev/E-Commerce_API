@@ -28,10 +28,10 @@ import { UserPrismaRepository } from './database/prisma/repositories/user-prisma
       },
       inject: ['PrismaService'],
     },
-    {
-      provide: 'UserRepository',
-      useClass: UserInMemoryRepository,
-    },
+    // {
+    //   provide: 'UserRepository',
+    //   useClass: UserInMemoryRepository,
+    // },
     {
       provide: 'HashProvider',
       useClass: BcryptjsHashProvider,
