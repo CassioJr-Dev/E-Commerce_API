@@ -16,6 +16,7 @@ export class UserPresenter {
     this.name = output.name;
     this.isSeller = output.isSeller;
     this.email = output.email;
+    this.created_at = output.created_at;
     this.updated_at = output.updated_at;
   }
 }
