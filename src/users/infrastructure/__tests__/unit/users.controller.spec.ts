@@ -6,7 +6,7 @@ import { SigninUseCase } from '@/users/application/usecases/signin.usecase';
 import { SigninDto } from '../../dtos/signin.dto';
 import { GetUserUseCase } from '@/users/application/usecases/getuser.usercase';
 import { ListUsersUseCase } from '@/users/application/usecases/listusers.usecase';
-import { UserPresenter } from '../../presenters/user.presenter';
+import { UserCollectionPresenter, UserPresenter } from '../../presenters/user.presenter';
 import { UpdatePasswordUseCase } from '@/users/application/usecases/update-password.usecase';
 import { UpdatePasswordDto } from '../../dtos/update-password.dto';
 
@@ -135,8 +135,9 @@ describe('UsersController unit tests', () => {
       page: 1,
       perPage: 1,
     };
-    const result = await sut.search(searchParams);
-    expect(output).toStrictEqual(result);
+    const presenter = await sut.search(searchParams)
+    expect(presenter).toBeInstanceOf(UserCollectionPresenter)
+    expect(presenter).toEqual(new UserCollectionPresenter(output))
     expect(mockListUsersUseCase.execute).toHaveBeenCalledWith(searchParams);
   });
 });
