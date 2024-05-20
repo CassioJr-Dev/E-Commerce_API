@@ -21,6 +21,6 @@ export class PaginationPresenter {
     this.currentPage = props.currentPage;
     this.perPage = props.perPage;
     this.lastPage = props.lastPage;
-    props.total = props.total;
+    this.total = props.total;
   }
 }
