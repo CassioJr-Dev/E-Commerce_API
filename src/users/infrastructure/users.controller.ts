@@ -23,7 +23,10 @@ import { ListUsersUseCase } from '../application/usecases/listusers.usecase';
 import { SigninDto } from './dtos/signin.dto';
 import { ListUsersDto } from './dtos/list-users.dto';
 import { UpdatePasswordDto } from './dtos/update-password.dto';
-import { UserCollectionPresenter, UserPresenter } from './presenters/user.presenter';
+import {
+  UserCollectionPresenter,
+  UserPresenter,
+} from './presenters/user.presenter';
 import { UserOutput } from '../application/dtos/user-output';
 
 @Controller('users')
@@ -54,7 +57,7 @@ export class UsersController {
   }
 
   static listUsersToResponse(output: ListUsersUseCase.Output) {
-    return new UserCollectionPresenter(output)
+    return new UserCollectionPresenter(output);
   }
 
   @Post()
@@ -73,7 +76,7 @@ export class UsersController {
   @Get()
   async search(@Query() searchParams: ListUsersDto) {
     const ouput = await this.listUsersUseCase.execute(searchParams);
-    return UsersController.listUsersToResponse(ouput)
+    return UsersController.listUsersToResponse(ouput);
   }
 
   @Get(':id')
