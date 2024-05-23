@@ -12,7 +12,7 @@ import { UsersController } from '../../users.controller';
 import { instanceToPlain } from 'class-transformer';
 import { applyGlobalConfig } from '@/global-config';
 
-describe('UserController unit tests', () => {
+describe('UserController e2e tests', () => {
   let app: INestApplication;
   let module: TestingModule;
   let repository: UserRepository.Repository;
@@ -55,21 +55,13 @@ describe('UserController unit tests', () => {
         .send(signupDto)
         .expect(201);
 
-      expect(Object.keys(res.body)).toStrictEqual([
-        'id',
-        'name',
-        'isSeller',
-        'email',
-        'created_at',
-        'updated_at',
-      ]);
-
-      const user = await repository.findById(res.body.id);
+      expect(Object.keys(res.body)).toStrictEqual(['data']);
+      const user = await repository.findById(res.body.data.id);
       const presenter = UsersController.userToResponse(user.toJSON());
       const serialized = instanceToPlain(presenter);
 
       console.log(res.body);
-      expect(res.body).toStrictEqual(serialized);
+      expect(res.body.data).toStrictEqual(serialized);
     });
   });
 });
