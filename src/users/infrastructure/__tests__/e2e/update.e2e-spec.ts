@@ -66,12 +66,23 @@ describe('UsersController unit tests', () => {
         .send({})
         .expect(422);
       expect(res.body.error).toBe('Unprocessable Entity');
-      console.log(res.body.error);
       expect(res.body.message).toEqual([
         'name must be a string',
         'isSeller must be a boolean value',
         'email must be an email',
       ]);
+    });
+
+    it('Should return a error with 404 code when throw NotFoundError with invalid id', async () => {
+      const res = await request(app.getHttpServer())
+        .put('/users/fakeId')
+        .send(updateUserDto)
+        .expect(404)
+        .expect({
+          statusCode: 404,
+          error: 'Not Found',
+          message: 'UserModel not found using ID fakeId',
+        });
     });
   });
 });
