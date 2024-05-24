@@ -1,13 +1,19 @@
 import { SignupUseCase } from '@/users/application/usecases/signup.usecase';
-import { IsBoolean, IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import {
+  IsBoolean,
+  IsEmail,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class SignupDto implements SignupUseCase.Input {
-
   @IsString()
   @IsNotEmpty()
   name: string;
 
   @IsBoolean()
+  @IsOptional()
   isSeller?: boolean;
 
   @IsString()
