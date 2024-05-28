@@ -21,9 +21,9 @@ describe('UsersController e2e tests', () => {
   let repository: UserRepository.Repository;
   const prismaService = new PrismaClient();
   let entity: UserEntity;
-  let hashProvider: HashProvider
-  let hashPassword: string
-  let accessToken: string
+  let hashProvider: HashProvider;
+  let hashPassword: string;
+  let accessToken: string;
 
   beforeAll(async () => {
     setupPrismaTests();
@@ -38,8 +38,8 @@ describe('UsersController e2e tests', () => {
     applyGlobalConfig(app);
     await app.init();
     repository = module.get<UserRepository.Repository>('UserRepository');
-    hashProvider = new BcryptjsHashProvider()
-    hashPassword = await hashProvider.generateHash('1234')
+    hashProvider = new BcryptjsHashProvider();
+    hashPassword = await hashProvider.generateHash('1234');
   });
 
   beforeEach(async () => {
@@ -49,14 +49,14 @@ describe('UsersController e2e tests', () => {
         email: 'a@a.com',
         password: hashPassword,
       }),
-    )
+    );
     await repository.insert(entity);
 
     const loginResponse = await request(app.getHttpServer())
       .post('/users/login')
       .send({ email: 'a@a.com', password: '1234' })
-      .expect(200)
-    accessToken = loginResponse.body.accessToken
+      .expect(200);
+    accessToken = loginResponse.body.accessToken;
   });
 
   describe('GET /users/:id', () => {
@@ -89,7 +89,7 @@ describe('UsersController e2e tests', () => {
         .expect({
           statusCode: 401,
           message: 'Unauthorized',
-        })
-    })
+        });
+    });
   });
 });
