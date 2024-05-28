@@ -27,6 +27,6 @@ export function applyGlobalConfig(app: INestApplication) {
     new ConflictErrorFilter(),
     new NotFoundErrorFilter(),
     new InvalidPasswordErrorFilter(),
-    new InvalidCredentialsErrorFilter()
+    new InvalidCredentialsErrorFilter(),
   );
 }

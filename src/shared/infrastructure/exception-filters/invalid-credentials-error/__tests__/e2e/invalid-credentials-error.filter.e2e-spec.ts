@@ -1,7 +1,39 @@
-import { InvalidCredentialsErrorFilter } from "../../invalid-credentials-error.filter";
+import { Controller, Get, INestApplication } from '@nestjs/common';
+import { InvalidCredentialsErrorFilter } from '../../invalid-credentials-error.filter';
+import { InvalidCredentialsError } from '@/shared/domain/errors/invalid-credentials-error';
+import { Test, TestingModule } from '@nestjs/testing';
+import request from 'supertest';
 
-describe('InvalidCredentialsErrorFilter', () => {
-  it('should be defined', () => {
+@Controller('stub')
+class StubController {
+  @Get()
+  index() {
+    throw new InvalidCredentialsError('Invalid credentials');
+  }
+}
+
+describe('InvalidCredentialsErrorFilter e2e tests', () => {
+  let app: INestApplication;
+  let module: TestingModule;
+
+  beforeAll(async () => {
+    module = await Test.createTestingModule({
+      controllers: [StubController],
+    }).compile();
+    app = module.createNestApplication();
+    app.useGlobalFilters(new InvalidCredentialsErrorFilter());
+    await app.init();
+  });
+
+  it('Should be defined', () => {
     expect(new InvalidCredentialsErrorFilter()).toBeDefined();
+  });
+
+  it('Should catch a InvalidCredentialsError', () => {
+    return request(app.getHttpServer()).get('/stub').expect(400).expect({
+      statusCode: 400,
+      error: 'Bad Request',
+      message: 'Invalid credentials',
+    });
   });
 });

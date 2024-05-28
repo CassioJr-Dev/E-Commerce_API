@@ -119,13 +119,13 @@ describe('UserController e2e tests', () => {
     });
 
     it('Should return a error with 400 code when password is incorrect', async () => {
-      const passwordHash = await hashProvider.generateHash(signinDto.password)
+      const passwordHash = await hashProvider.generateHash(signinDto.password);
       const entity = new UserEntity({
         ...UserDataBuilder({}),
         email: signinDto.email,
         password: passwordHash,
-      })
-      await repository.insert(entity)
+      });
+      await repository.insert(entity);
 
       const res = await request(app.getHttpServer())
         .post('/users/login')
@@ -135,7 +135,7 @@ describe('UserController e2e tests', () => {
           statusCode: 400,
           error: 'Bad Request',
           message: 'Invalid credentials',
-        })
-    })
+        });
+    });
   });
 });
