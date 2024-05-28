@@ -22,6 +22,7 @@ describe('UsersController e2e tests', () => {
   const prismaService = new PrismaClient();
   let hashProvider: HashProvider;
   let entity: UserEntity;
+  let accessToken: string;
 
   beforeAll(async () => {
     setupPrismaTests();
@@ -46,14 +47,22 @@ describe('UsersController e2e tests', () => {
     };
     await prismaService.user.deleteMany();
     const hashPassword = await hashProvider.generateHash('old_password');
-    entity = new UserEntity(UserDataBuilder({ password: hashPassword }));
+    entity = new UserEntity(
+      UserDataBuilder({ email: 'a@a.com', password: hashPassword }),
+    );
     await repository.insert(entity);
+    const loginResponse = await request(app.getHttpServer())
+      .post('/users/login')
+      .send({ email: 'a@a.com', password: 'old_password' })
+      .expect(200);
+    accessToken = loginResponse.body.accessToken;
   });
 
   describe('POST /users', () => {
-    it('should update a password', async () => {
+    it('Should update a password', async () => {
       const res = await request(app.getHttpServer())
         .patch(`/users/${entity._id}`)
+        .set('Authorization', `Bearer ${accessToken}`)
         .send(updatePasswordDto)
         .expect(200);
       expect(Object.keys(res.body)).toStrictEqual(['data']);
@@ -65,9 +74,10 @@ describe('UsersController e2e tests', () => {
       expect(checkNewPassword).toBeTruthy();
     });
 
-    it('should return a error with 422 code when the request body is invalid', async () => {
+    it('Should return a error with 422 code when the request body is invalid', async () => {
       const res = await request(app.getHttpServer())
         .patch('/users/fakeId')
+        .set('Authorization', `Bearer ${accessToken}`)
         .send({})
         .expect(422);
       expect(res.body.error).toBe('Unprocessable Entity');
@@ -82,10 +92,61 @@ describe('UsersController e2e tests', () => {
     it('Should return a error with 404 code when throw NotFoundError with invalid id', async () => {
       const res = await request(app.getHttpServer())
         .patch('/users/fakeId')
+        .set('Authorization', `Bearer ${accessToken}`)
         .send(updatePasswordDto)
         .expect(404);
       expect(res.body.error).toBe('Not Found');
       expect(res.body.message).toEqual('UserModel not found using ID fakeId');
+    });
+
+    it('Should return a error with 422 code when the password field is invalid', async () => {
+      delete updatePasswordDto.password;
+      const res = await request(app.getHttpServer())
+        .patch(`/users/${entity._id}`)
+        .set('Authorization', `Bearer ${accessToken}`)
+        .send(updatePasswordDto)
+        .expect(422);
+      expect(res.body.error).toBe('Unprocessable Entity');
+      expect(res.body.message).toEqual([
+        'password should not be empty',
+        'password must be a string',
+      ]);
+    });
+    it('Should return a error with 422 code when the oldPassword field is invalid', async () => {
+      delete updatePasswordDto.oldPassword;
+      const res = await request(app.getHttpServer())
+        .patch(`/users/${entity._id}`)
+        .set('Authorization', `Bearer ${accessToken}`)
+        .send(updatePasswordDto)
+        .expect(422);
+      expect(res.body.error).toBe('Unprocessable Entity');
+      expect(res.body.message).toEqual([
+        'oldPassword should not be empty',
+        'oldPassword must be a string',
+      ]);
+    });
+    it('Should return a error with 422 code when password does not match', async () => {
+      updatePasswordDto.oldPassword = 'fake';
+      const res = await request(app.getHttpServer())
+        .patch(`/users/${entity._id}`)
+        .set('Authorization', `Bearer ${accessToken}`)
+        .send(updatePasswordDto)
+        .expect(422)
+        .expect({
+          statusCode: 422,
+          error: 'Unprocessable Entity',
+          message: 'Old password does not match',
+        });
+    });
+
+    it('Should return a error with 401 code when the request is not authorized', async () => {
+      const res = await request(app.getHttpServer())
+        .patch('/users/fakeId')
+        .expect(401)
+        .expect({
+          statusCode: 401,
+          message: 'Unauthorized',
+        });
     });
   });
 });
