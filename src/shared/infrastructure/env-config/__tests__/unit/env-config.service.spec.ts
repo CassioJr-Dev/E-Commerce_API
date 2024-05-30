@@ -14,19 +14,23 @@ describe('EnvConfigService unit tests', () => {
     sut = module.get<EnvConfigService>(EnvConfigService);
   });
 
-  it('should be defined', () => {
+  it('Should be defined', () => {
     expect(sut).toBeDefined();
   });
 
-  it('should return the variable PORT', () => {
+  it('Should return the variable PORT', () => {
     expect(sut.getAppPort()).toBe(3000);
   });
 
-  it('should return the variable JWT_SECRET', () => {
+  it('Should return the variable NODE_ENV', () => {
+    expect(sut.getNodeEnv()).toBe('test');
+  })
+
+  it('Should return the variable JWT_SECRET', () => {
     expect(sut.getJwtSecret()).toBe('my_secret');
   });
 
-  it('should return the variable JWT_EXPIRES_IN', () => {
+  it('Should return the variable JWT_EXPIRES_IN', () => {
     expect(sut.getJwtExpiresInSeconds()).toBe(86400);
   });
 });
