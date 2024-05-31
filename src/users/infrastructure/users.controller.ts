@@ -162,6 +162,15 @@ export class UsersController {
     return UsersController.listUsersToResponse(ouput);
   }
 
+  @ApiBearerAuth()
+  @ApiResponse({
+    status: 404,
+    description: 'Id não encontrado',
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Acesso não autorizado',
+  })
   @UseGuards(AuthGuard)
   @Get(':id')
   async findOne(@Param('id') id: string) {
