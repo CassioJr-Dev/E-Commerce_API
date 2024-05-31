@@ -178,7 +178,6 @@ export class UsersController {
     return UsersController.userToResponse(output);
   }
 
-
   @ApiBearerAuth()
   @ApiResponse({
     status: 422,
