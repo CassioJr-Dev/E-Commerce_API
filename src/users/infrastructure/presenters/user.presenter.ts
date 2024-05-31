@@ -5,7 +5,7 @@ import { ApiProperty, ApiResponseProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 
 export class UserPresenter {
-  @ApiResponseProperty()
+  @ApiProperty({ description: 'Identificação do usuário' })
   id: string;
 
   @ApiProperty({ description: 'Nome do usuário' })
