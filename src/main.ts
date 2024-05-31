@@ -20,10 +20,10 @@ async function bootstrap() {
       type: 'http',
       in: 'Header',
     })
-    .build()
+    .build();
 
-  const document = SwaggerModule.createDocument(app, config)
-  SwaggerModule.setup('api', app, document)
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
 
   applyGlobalConfig(app);
   const port = app.get(EnvConfigService);

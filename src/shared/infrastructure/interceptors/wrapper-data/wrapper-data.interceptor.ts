@@ -11,14 +11,17 @@ export class WrapperDataInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     return next.handle().pipe(
       map(body => {
-
         // Handle null or undefined body
         if (body === null || body === undefined) {
           return body;
         }
 
         // Handle primitive types (string, number, boolean, etc.)
-        if (typeof body === 'string' || typeof body === 'number' || typeof body === 'boolean') {
+        if (
+          typeof body === 'string' ||
+          typeof body === 'number' ||
+          typeof body === 'boolean'
+        ) {
           return body;
         }
 
