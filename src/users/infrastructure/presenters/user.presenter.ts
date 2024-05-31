@@ -1,11 +1,11 @@
 import { CollectionPresenter } from '@/shared/infrastructure/presenters/collection.presenter';
 import { UserOutput } from '@/users/application/dtos/user-output';
 import { ListUsersUseCase } from '@/users/application/usecases/listusers.usecase';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiResponseProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 
 export class UserPresenter {
-  @ApiProperty({ description: 'Identificação do usuário' })
+  @ApiResponseProperty()
   id: string;
 
   @ApiProperty({ description: 'Nome do usuário' })
