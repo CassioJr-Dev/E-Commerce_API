@@ -74,6 +74,25 @@ export class UsersController {
   }
 
   @ApiResponse({
+    status: 201,
+    schema: {
+      type: 'object',
+      properties: {
+        data: {
+          type: 'object',
+          properties: {
+            id: { type: 'string', format: 'uuid' },
+            name: { type: 'string' },
+            isSeller: { type: 'boolean' },
+            email: { type: 'string', format: 'email' },
+            created_at: { type: 'string', format: 'date-time' },
+            updated_at: { type: 'string', format: 'date-time' },
+          },
+        },
+      },
+    },
+  })
+  @ApiResponse({
     status: 409,
     description: 'Conflito de e-mail',
   })
@@ -164,6 +183,25 @@ export class UsersController {
 
   @ApiBearerAuth()
   @ApiResponse({
+    status: 200,
+    schema: {
+      type: 'object',
+      properties: {
+        data: {
+          type: 'object',
+          properties: {
+            id: { type: 'string', format: 'uuid' },
+            name: { type: 'string' },
+            isSeller: { type: 'boolean' },
+            email: { type: 'string', format: 'email' },
+            created_at: { type: 'string', format: 'date-time' },
+            updated_at: { type: 'string', format: 'date-time' },
+          },
+        },
+      },
+    },
+  })
+  @ApiResponse({
     status: 404,
     description: 'Id não encontrado',
   })
@@ -179,6 +217,25 @@ export class UsersController {
   }
 
   @ApiBearerAuth()
+  @ApiResponse({
+    status: 200,
+    schema: {
+      type: 'object',
+      properties: {
+        data: {
+          type: 'object',
+          properties: {
+            id: { type: 'string', format: 'uuid' },
+            name: { type: 'string' },
+            isSeller: { type: 'boolean' },
+            email: { type: 'string', format: 'email' },
+            created_at: { type: 'string', format: 'date-time' },
+            updated_at: { type: 'string', format: 'date-time' },
+          },
+        },
+      },
+    },
+  })
   @ApiResponse({
     status: 422,
     description: 'Corpo da requisição com dados inválidos',
@@ -202,6 +259,25 @@ export class UsersController {
   }
 
   @ApiBearerAuth()
+  @ApiResponse({
+    status: 200,
+    schema: {
+      type: 'object',
+      properties: {
+        data: {
+          type: 'object',
+          properties: {
+            id: { type: 'string', format: 'uuid' },
+            name: { type: 'string' },
+            isSeller: { type: 'boolean' },
+            email: { type: 'string', format: 'email' },
+            created_at: { type: 'string', format: 'date-time' },
+            updated_at: { type: 'string', format: 'date-time' },
+          },
+        },
+      },
+    },
+  })
   @ApiResponse({
     status: 422,
     description: 'Corpo da requisição com dados inválidos',
