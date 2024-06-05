@@ -17,6 +17,21 @@ export class ProductEntity extends Entity<ProductProps> {
     super(props, id, created_at, updated_at);
   }
 
+  updateName(value: string): void {
+    this.name = value;
+    this.updated_at = this.toDate();
+  }
+
+  updateDescription(value: string): void {
+    this.description = value;
+    this.updated_at = this.toDate();
+  }
+
+  updatePrice(value: number): void {
+    this.price = value;
+    this.updated_at = this.toDate();
+  }
+
   get name() {
     return this.props.name;
   }
