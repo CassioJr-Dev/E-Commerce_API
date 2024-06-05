@@ -1,6 +1,6 @@
 import { Entity } from '@/shared/domain/entities/entity';
 
-type ProductProps = {
+export type ProductProps = {
   name: string;
   description?: string;
   price: number;

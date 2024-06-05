@@ -9,7 +9,7 @@ type Props = {
   user_id?: string;
 };
 
-export function UserDataBuilder(props: Props): ProductProps {
+export function ProductDataBuilder(props: Props): ProductProps {
   return {
     name: props.name ?? faker.commerce.product(),
     description: props.description ?? 'description of product',
