@@ -15,6 +15,8 @@ describe('ProductEntity unit tests', () => {
     expect(sut.props.description).toEqual(props.description);
     expect(sut.props.price).toEqual(props.price);
     expect(sut.props.user_id).toEqual(props.user_id);
+
+    console.log(sut);
   });
 
   it('Getter of name field', () => {
@@ -51,6 +53,18 @@ describe('ProductEntity unit tests', () => {
     sut['price'] = 10.0;
     expect(sut.price).toEqual(10.0);
     expect(typeof sut.price).toBe('number');
+  });
+
+  it('Getter of stock field', () => {
+    expect(sut.stock).toBeDefined();
+    expect(sut.stock).toEqual(props.stock);
+    expect(typeof sut.stock).toBe('number');
+  });
+
+  it('Setter of stock field', () => {
+    sut['stock'] = 5;
+    expect(sut.stock).toEqual(5);
+    expect(typeof sut.stock).toBe('number');
   });
 
   it('Getter of user_id field', () => {
