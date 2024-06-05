@@ -4,6 +4,7 @@ export type ProductProps = {
   name: string;
   description?: string;
   price: number;
+  stock: number;
   user_id: string;
 };
 
@@ -32,6 +33,11 @@ export class ProductEntity extends Entity<ProductProps> {
     this.updated_at = this.toDate();
   }
 
+  updateStock(value: number): void {
+    this.stock = value;
+    this.updated_at = this.toDate();
+  }
+
   get name() {
     return this.props.name;
   }
@@ -54,6 +60,14 @@ export class ProductEntity extends Entity<ProductProps> {
 
   private set price(value: number) {
     this.props.price = value;
+  }
+
+  get stock() {
+    return this.props.stock;
+  }
+
+  private set stock(value: number) {
+    this.props.stock = value;
   }
 
   get user_id() {
