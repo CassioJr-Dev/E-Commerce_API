@@ -17,4 +17,3 @@ export function ProductDataBuilder(props: Props): ProductProps {
     user_id: props.user_id ?? randomUUID(),
   };
 }
-
