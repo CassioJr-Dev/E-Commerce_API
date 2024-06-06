@@ -110,8 +110,6 @@ export class UsersController {
       ...tokenJwt,
       ...UsersController.userToResponse(output),
     };
-
-    // return UsersController.userToResponse(output);
   }
 
   @ApiResponse({
