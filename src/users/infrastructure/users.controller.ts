@@ -103,7 +103,15 @@ export class UsersController {
   @Post()
   async create(@Body() signupDto: SignupDto) {
     const output = await this.signupUseCase.execute(signupDto);
-    return UsersController.userToResponse(output);
+
+    const tokenJwt = await this.authService.generateJwt(output.id);
+
+    return {
+      ...tokenJwt,
+      ...UsersController.userToResponse(output),
+    };
+
+    // return UsersController.userToResponse(output);
   }
 
   @ApiResponse({
@@ -133,7 +141,12 @@ export class UsersController {
   @Post('login')
   async login(@Body() signinDto: SigninDto) {
     const output = await this.signinUseCase.execute(signinDto);
-    return this.authService.generateJwt(output.id);
+    const tokenJwt = await this.authService.generateJwt(output.id);
+
+    return {
+      ...tokenJwt,
+      ...UsersController.userToResponse(output),
+    };
   }
 
   @ApiBearerAuth()

@@ -25,9 +25,18 @@ export class WrapperDataInterceptor implements NestInterceptor {
           return body;
         }
 
-        return !body || 'accessToken' in body || 'meta' in body
-          ? body
-          : { data: body };
+        let user: Object;
+
+        let copyBody = Object.assign({}, body);
+        delete copyBody?.accessToken;
+
+        const keys = ['id', 'name', 'isSeller', 'email'];
+
+        if (keys.every(key => body.hasOwnProperty(key))) {
+          user = { user: copyBody, accessToken: body?.accessToken };
+        }
+
+        return !body || 'meta' in body ? body : { data: user };
       }),
     );
   }
