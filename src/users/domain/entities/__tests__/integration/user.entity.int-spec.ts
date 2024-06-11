@@ -45,7 +45,7 @@ describe('UserEntity integration tests', () => {
 
       props = {
         ...UserDataBuilder({}),
-        name: 10 as any,
+        isSeller: 10 as any,
       };
       expect(() => new UserEntity(props)).toThrowError(EntityValidationError);
     });
