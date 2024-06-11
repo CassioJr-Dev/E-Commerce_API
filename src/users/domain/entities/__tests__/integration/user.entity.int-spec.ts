@@ -160,7 +160,7 @@ describe('UserEntity integration tests', () => {
       props = UserDataBuilder({});
       sut = new UserEntity(props);
     });
-    it('Should throw an error when update a user with invalid name', () => {
+    it('Should throw an error when update a user with invalid IsSeller', () => {
       argument = null;
       expect(() => sut.updateIsSeller(argument)).toThrowError(
         EntityValidationError,
@@ -194,7 +194,7 @@ describe('UserEntity integration tests', () => {
       props = UserDataBuilder({});
       sut = new UserEntity(props);
     });
-    it('Should throw an error when update a user with invalid name', () => {
+    it('Should throw an error when update a user with invalid email', () => {
       argument = null;
       expect(() => sut.updateEmail(argument)).toThrowError(
         EntityValidationError,
@@ -233,7 +233,7 @@ describe('UserEntity integration tests', () => {
       props = UserDataBuilder({});
       sut = new UserEntity(props);
     });
-    it('Should throw an error when update a user with invalid name', () => {
+    it('Should throw an error when update a user with invalid password', () => {
       argument = null;
       expect(() => sut.updatePassword(argument)).toThrowError(
         EntityValidationError,
