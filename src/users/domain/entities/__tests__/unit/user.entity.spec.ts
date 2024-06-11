@@ -4,14 +4,18 @@ import { UserEntity, UserProps } from '../../user.entity';
 describe('UserEntity unit tests', () => {
   let props: UserProps;
   let sut: UserEntity;
+  let validateSpy: any;
   beforeEach(() => {
-    UserEntity.validate = jest.fn();
     props = UserDataBuilder({});
     sut = new UserEntity(props);
+    validateSpy = jest
+      .spyOn(UserEntity, 'validate')
+      .mockImplementation(() => {});
   });
 
   it('Constructor method test', () => {
-    expect(UserEntity.validate).toHaveBeenCalled();
+    new UserEntity(props);
+    expect(validateSpy).toHaveBeenCalledTimes(1);
     expect(sut.props.name).toEqual(props.name);
     expect(sut.props.isSeller).toEqual(props.isSeller);
     expect(sut.props.email).toEqual(props.email);
@@ -70,6 +74,7 @@ describe('UserEntity unit tests', () => {
     const toDateSpy = jest.spyOn(sut, 'toDate');
     sut.updateName('other name');
 
+    expect(validateSpy).toHaveBeenCalledTimes(1);
     expect(toDateSpy).toHaveBeenCalledTimes(1);
     expect(UserEntity.validate).toHaveBeenCalled();
     expect(sut.name).toEqual('other name');
@@ -79,6 +84,7 @@ describe('UserEntity unit tests', () => {
     const toDateSpy = jest.spyOn(sut, 'toDate');
     sut.updateIsSeller(true);
 
+    expect(validateSpy).toHaveBeenCalledTimes(1);
     expect(toDateSpy).toHaveBeenCalledTimes(1);
     expect(UserEntity.validate).toHaveBeenCalled();
     expect(sut.isSeller).toBeTruthy();
@@ -88,6 +94,7 @@ describe('UserEntity unit tests', () => {
     const toDateSpy = jest.spyOn(sut, 'toDate');
     sut.updateEmail('emailtest@gmail.com');
 
+    expect(validateSpy).toHaveBeenCalledTimes(1);
     expect(toDateSpy).toHaveBeenCalledTimes(1);
     expect(UserEntity.validate).toHaveBeenCalled();
     expect(sut.email).toEqual('emailtest@gmail.com');
@@ -97,6 +104,7 @@ describe('UserEntity unit tests', () => {
     const toDateSpy = jest.spyOn(sut, 'toDate');
     sut.updatePassword('other password');
 
+    expect(validateSpy).toHaveBeenCalledTimes(1);
     expect(toDateSpy).toHaveBeenCalledTimes(1);
     expect(UserEntity.validate).toHaveBeenCalled();
     expect(sut.password).toEqual('other password');
