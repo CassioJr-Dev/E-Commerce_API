@@ -4,13 +4,19 @@ import { ProductEntity, ProductProps } from '../../product.entity';
 describe('ProductEntity unit tests', () => {
   let props: ProductProps;
   let sut: ProductEntity;
+  let validateSpy: any;
 
   beforeEach(() => {
     props = ProductDataBuilder({});
     sut = new ProductEntity(props);
+    validateSpy = jest
+      .spyOn(ProductEntity, 'validate')
+      .mockImplementation(() => {});
   });
 
   it('Constructor method test', () => {
+    new ProductEntity(props);
+    expect(validateSpy).toHaveBeenCalledTimes(1);
     expect(sut.props.name).toEqual(props.name);
     expect(sut.props.description).toEqual(props.description);
     expect(sut.props.price).toEqual(props.price);
@@ -83,6 +89,7 @@ describe('ProductEntity unit tests', () => {
     const toDateSpy = jest.spyOn(sut, 'toDate');
     sut.updateName('other product name');
 
+    expect(validateSpy).toHaveBeenCalledTimes(1);
     expect(toDateSpy).toHaveBeenCalledTimes(1);
     expect(sut.name).toEqual('other product name');
   });
@@ -91,6 +98,7 @@ describe('ProductEntity unit tests', () => {
     const toDateSpy = jest.spyOn(sut, 'toDate');
     sut.updateDescription('other product description');
 
+    expect(validateSpy).toHaveBeenCalledTimes(1);
     expect(toDateSpy).toHaveBeenCalledTimes(1);
     expect(sut.description).toEqual('other product description');
   });
@@ -99,6 +107,7 @@ describe('ProductEntity unit tests', () => {
     const toDateSpy = jest.spyOn(sut, 'toDate');
     sut.updatePrice(20.0);
 
+    expect(validateSpy).toHaveBeenCalledTimes(1);
     expect(toDateSpy).toHaveBeenCalledTimes(1);
     expect(sut.price).toEqual(20.0);
   });
