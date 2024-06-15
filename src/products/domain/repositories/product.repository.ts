@@ -22,6 +22,9 @@ export namespace ProductRepository {
       SearchParams,
       SearchResult
     > {
-    getProductsByUserId(userId: string): Promise<ProductEntity>;
+    getProductByIdAndUserId(
+      productId: string,
+      userId: string,
+    ): Promise<ProductEntity>;
   }
 }
