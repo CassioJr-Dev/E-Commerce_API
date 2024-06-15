@@ -13,10 +13,10 @@ export namespace CreateProductUseCase {
     user_id: string;
   };
 
-  export type Output = ProductOutput
+  export type Output = ProductOutput;
 
   export class UseCase implements DefaultUseCase<Input, Output> {
-    constructor(private productRepository: ProductRepository.Repository){}
+    constructor(private productRepository: ProductRepository.Repository) {}
 
     async execute(input: Input): Promise<Output> {
       const { name, description = null, price, stock, user_id } = input;
@@ -25,11 +25,11 @@ export namespace CreateProductUseCase {
         throw new BadRequestError('Input data not provided');
       }
 
-      const entity = new ProductEntity(input)
+      const entity = new ProductEntity(input);
 
-      await this.productRepository.insert(entity)
+      await this.productRepository.insert(entity);
 
-      return ProductOutputMapper.toOutput(entity)
+      return ProductOutputMapper.toOutput(entity);
     }
   }
 }

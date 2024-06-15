@@ -1,4 +1,4 @@
-import { ProductEntity } from "@/products/domain/entities/product.entity";
+import { ProductEntity } from '@/products/domain/entities/product.entity';
 
 export type ProductOutput = {
   id: string;
