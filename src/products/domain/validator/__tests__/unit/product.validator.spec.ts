@@ -37,17 +37,17 @@ describe('ProductValidator unit tests', () => {
   });
 
   it('Invalidation cases for description field', () => {
-    let isValid = sut.validate({ ...props, description: 'a'.repeat(256) });
+    let isValid = sut.validate({ ...props, description: 'a'.repeat(1001) });
     expect(isValid).toBeFalsy();
     expect(sut.errors['description']).toStrictEqual([
-      'description must be shorter than or equal to 255 characters',
+      'description must be shorter than or equal to 1000 characters',
     ]);
 
     isValid = sut.validate({ ...props, description: 10 as any });
     expect(isValid).toBeFalsy();
     expect(sut.errors['description']).toStrictEqual([
       'description must be a string',
-      'description must be shorter than or equal to 255 characters',
+      'description must be shorter than or equal to 1000 characters',
     ]);
   });
 

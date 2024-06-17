@@ -14,7 +14,7 @@ export class ProductRules {
   @IsNotEmpty()
   name: string;
 
-  @MaxLength(255)
+  @MaxLength(1000)
   @IsString()
   @IsOptional()
   description?: string;

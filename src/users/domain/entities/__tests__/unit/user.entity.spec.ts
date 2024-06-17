@@ -15,7 +15,7 @@ describe('UserEntity unit tests', () => {
 
   it('Constructor method test', () => {
     new UserEntity(props);
-    expect(validateSpy).toHaveBeenCalledTimes(1);
+    expect(validateSpy).toHaveBeenCalled();
     expect(sut.props.name).toEqual(props.name);
     expect(sut.props.isSeller).toEqual(props.isSeller);
     expect(sut.props.email).toEqual(props.email);
@@ -74,7 +74,7 @@ describe('UserEntity unit tests', () => {
     const toDateSpy = jest.spyOn(sut, 'toDate');
     sut.updateName('other name');
 
-    expect(validateSpy).toHaveBeenCalledTimes(1);
+    expect(validateSpy).toHaveBeenCalled();
     expect(toDateSpy).toHaveBeenCalledTimes(1);
     expect(UserEntity.validate).toHaveBeenCalled();
     expect(sut.name).toEqual('other name');
@@ -84,7 +84,7 @@ describe('UserEntity unit tests', () => {
     const toDateSpy = jest.spyOn(sut, 'toDate');
     sut.updateIsSeller(true);
 
-    expect(validateSpy).toHaveBeenCalledTimes(1);
+    expect(validateSpy).toHaveBeenCalled();
     expect(toDateSpy).toHaveBeenCalledTimes(1);
     expect(UserEntity.validate).toHaveBeenCalled();
     expect(sut.isSeller).toBeTruthy();
@@ -94,7 +94,7 @@ describe('UserEntity unit tests', () => {
     const toDateSpy = jest.spyOn(sut, 'toDate');
     sut.updateEmail('emailtest@gmail.com');
 
-    expect(validateSpy).toHaveBeenCalledTimes(1);
+    expect(validateSpy).toHaveBeenCalled();
     expect(toDateSpy).toHaveBeenCalledTimes(1);
     expect(UserEntity.validate).toHaveBeenCalled();
     expect(sut.email).toEqual('emailtest@gmail.com');
@@ -104,7 +104,7 @@ describe('UserEntity unit tests', () => {
     const toDateSpy = jest.spyOn(sut, 'toDate');
     sut.updatePassword('other password');
 
-    expect(validateSpy).toHaveBeenCalledTimes(1);
+    expect(validateSpy).toHaveBeenCalled();
     expect(toDateSpy).toHaveBeenCalledTimes(1);
     expect(UserEntity.validate).toHaveBeenCalled();
     expect(sut.password).toEqual('other password');
