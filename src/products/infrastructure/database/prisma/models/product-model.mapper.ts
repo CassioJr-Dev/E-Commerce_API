@@ -2,7 +2,7 @@ import { ProductEntity } from '@/products/domain/entities/product.entity';
 import { ValidationError } from '@/shared/domain/errors/validation-error';
 import { Product } from '@prisma/client';
 
-export class UserModelMapper {
+export class ProductModelMapper {
   static toEntity(model: Product): ProductEntity {
     const {
       id,
@@ -15,10 +15,12 @@ export class UserModelMapper {
       updated_at,
     } = model;
 
+    const priceConverted = Number(price.toString());
+
     const data = {
       name,
       description,
-      price: price.toNumber(),
+      price: priceConverted,
       stock,
       user_id,
     };
