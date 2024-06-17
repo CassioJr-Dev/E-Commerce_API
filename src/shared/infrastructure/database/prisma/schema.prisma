@@ -21,6 +21,21 @@ model User {
   password      String    @db.VarChar(100)
   created_at    DateTime
   updated_at    DateTime
+  product       Product[]
 
   @@map("users")
+}
+
+model Product {
+  id            String    @id @db.Text
+  name          String    @db.Text
+  description   String?   @db.Text
+  price         Decimal   @db.Decimal(10, 2)
+  stock         Int
+  user          User        @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id       String
+  created_at    DateTime
+  updated_at    DateTime
+
+  @@map("products")
 }
