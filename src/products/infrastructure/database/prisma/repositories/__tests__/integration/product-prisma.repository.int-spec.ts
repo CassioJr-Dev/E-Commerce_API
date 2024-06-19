@@ -152,100 +152,103 @@ describe('ProductPrismaRepository integration tests', () => {
     expect(output).toBeNull();
   });
 
-  // describe('Search method tests', () => {
-  //   it('Should apply only pagination when the other params are null', async () => {
-  //     const created_at = new Date();
-  //     const entities: ProductEntity[] = [];
+  describe('Search method tests', () => {
+    it('Should apply only pagination when the other params are null', async () => {
+      const created_at = new Date();
+      const entities: ProductEntity[] = [];
 
-  //     const arrange = Array(16).fill(ProductDataBuilder({}));
-  //     arrange.forEach((element, index) => {
-  //       entities.push(
-  //         new ProductEntity(
-  //           {
-  //             ...element,
-  //             name: `User${index}`,
-  //             email: `test${index}@gmail.com`,
-  //           },
-  //           undefined,
-  //           new Date(created_at.getTime() + index),
-  //         ),
-  //       );
-  //     });
-  //     await prismaService.product.createMany({
-  //       data: entities.map(item => item.toJSON()),
-  //     });
+      const arrange = Array(16).fill(ProductDataBuilder({}));
+      arrange.forEach((element, index) => {
+        entities.push(
+          new ProductEntity(
+            {
+              ...element,
+              name: `User${index}`,
+              user_id: userEntity.id,
+            },
+            undefined,
+            new Date(created_at.getTime() + index),
+          ),
+        );
+      });
+      await prismaService.product.createMany({
+        data: entities.map(item => item.toJSON()),
+      });
 
-  //     const searchOutput = await sut.search(new ProductRepository.SearchParams());
+      const searchOutput = await sut.search(
+        new ProductRepository.SearchParams(),
+      );
 
-  //     const items = searchOutput.items;
+      const items = searchOutput.items;
 
-  //     expect(searchOutput).toBeInstanceOf(ProductRepository.SearchResult);
-  //     expect(searchOutput.total).toBe(16);
-  //     expect(searchOutput.items.length).toBe(15);
+      expect(searchOutput).toBeInstanceOf(ProductRepository.SearchResult);
+      expect(searchOutput.total).toBe(16);
+      expect(searchOutput.items.length).toBe(15);
 
-  //     searchOutput.items.forEach(item => {
-  //       expect(item).toBeInstanceOf(ProductEntity);
-  //     });
+      searchOutput.items.forEach(item => {
+        expect(item).toBeInstanceOf(ProductEntity);
+      });
 
-  //     items.reverse().forEach((item, index) => {
-  //       expect(`test${index + 1}@gmail.com`).toBe(item.email);
-  //     });
-  //   });
+      items.reverse().forEach((item, index) => {
+        expect(`User${index + 1}`).toBe(item.name);
+      });
+    });
 
-  //   it('Should search using filter, sort and paginate', async () => {
-  //     const created_at = new Date();
-  //     const entities: ProductEntity[] = [];
+    it('Should search using filter, sort and paginate', async () => {
+      const created_at = new Date();
+      const entities: ProductEntity[] = [];
 
-  //     const arrange = ['test', 'a', 'TEST', 'b', 'TeSt'];
+      const arrange = ['test', 'a', 'TEST', 'b', 'TeSt'];
 
-  //     arrange.forEach((element, index) => {
-  //       entities.push(
-  //         new ProductEntity(
-  //           {
-  //             ...ProductDataBuilder({ name: element }),
-  //           },
-  //           undefined,
-  //           new Date(created_at.getTime() + index),
-  //         ),
-  //       );
-  //     });
+      arrange.forEach((element, index) => {
+        entities.push(
+          new ProductEntity(
+            {
+              ...ProductDataBuilder({ name: element }),
+              user_id: userEntity.id,
+            },
+            undefined,
+            new Date(created_at.getTime() + index),
+          ),
+        );
+      });
 
-  //     await prismaService.product.createMany({
-  //       data: entities.map(item => item.toJSON()),
-  //     });
+      await prismaService.product.createMany({
+        data: entities.map(item => item.toJSON()),
+      });
 
-  //     const searchOutputPage1 = await sut.search(
-  //       new ProductRepository.SearchParams({
-  //         page: 1,
-  //         perPage: 3,
-  //         sort: 'name',
-  //         sortDir: 'asc',
-  //         filter: 'TEST',
-  //       }),
-  //     );
+      const searchOutputPage1 = await sut.search(
+        new ProductRepository.SearchParams({
+          page: 1,
+          perPage: 3,
+          sort: 'name',
+          sortDir: 'asc',
+          filter: 'TEST',
+        }),
+      );
 
-  //     console.log(searchOutputPage1.items);
-  //     console.log(searchOutputPage1.sortDir);
-  //     expect(searchOutputPage1.items[0].toJSON()).toMatchObject(
-  //       entities[0].toJSON(),
-  //     );
-  //     expect(searchOutputPage1.items[1].toJSON()).toMatchObject(
-  //       entities[4].toJSON(),
-  //     );
+      console.log(searchOutputPage1.items);
+      console.log(searchOutputPage1.sortDir);
+      expect(searchOutputPage1.items[0].toJSON()).toMatchObject(
+        entities[0].toJSON(),
+      );
+      expect(searchOutputPage1.items[1].toJSON()).toMatchObject(
+        entities[4].toJSON(),
+      );
 
-  //     const searchOutputPage2 = await sut.search(
-  //       new ProductRepository.SearchParams({
-  //         page: 2,
-  //         perPage: 2,
-  //         sort: 'name',
-  //         sortDir: 'asc',
-  //         filter: 'TEST',
-  //       }),
-  //     );
+      const searchOutputPage2 = await sut.search(
+        new ProductRepository.SearchParams({
+          page: 2,
+          perPage: 2,
+          sort: 'name',
+          sortDir: 'asc',
+          filter: 'TEST',
+        }),
+      );
 
-  //     expect(searchOutputPage2.items[0].toJSON()).toMatchObject(
-  //       entities[2].toJSON(),
-  //     );
-  //   });
-  // });
+      expect(searchOutputPage2.items[0].toJSON()).toMatchObject(
+        entities[2].toJSON(),
+      );
+    });
+  });
 });
