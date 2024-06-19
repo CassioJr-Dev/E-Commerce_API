@@ -21,10 +21,5 @@ export namespace ProductRepository {
       Filter,
       SearchParams,
       SearchResult
-    > {
-    getProductByIdAndUserId(
-      productId: string,
-      userId: string,
-    ): Promise<ProductEntity>;
-  }
+    > {}
 }

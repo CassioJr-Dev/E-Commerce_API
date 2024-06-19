@@ -3,18 +3,12 @@ import { ProductRepository } from '@/products/domain/repositories/product.reposi
 import { PrismaService } from '@/shared/infrastructure/database/prisma/prisma.service';
 import { ProductModelMapper } from '../models/product-model.mapper';
 import { NotFoundError } from '@/shared/domain/errors/not-found-error';
+import { ForbiddenError } from '@/shared/domain/errors/forbidden-error';
 
 export class ProductPrismaRepository implements ProductRepository.Repository {
   sortableFields: string[] = ['name', 'price', 'created_at'];
 
   constructor(private prismaService: PrismaService) {}
-
-  async getProductByIdAndUserId(
-    productId: string,
-    userId: string,
-  ): Promise<ProductEntity> {
-    throw new Error('Method not implemented.');
-  }
 
   async search(
     props: ProductRepository.SearchParams,
@@ -62,6 +56,7 @@ export class ProductPrismaRepository implements ProductRepository.Repository {
   }
 
   async insert(entity: ProductEntity): Promise<void> {
+    await this.userIsSeller(entity.user_id);
     await this.prismaService.product.create({
       data: entity.toJSON(),
     });
@@ -99,6 +94,7 @@ export class ProductPrismaRepository implements ProductRepository.Repository {
   }
 
   protected async _get(id: string, user_id?: string): Promise<ProductEntity> {
+    await this.userIsSeller(user_id);
     try {
       const product = await this.prismaService.product.findUnique({
         where: {
@@ -110,5 +106,21 @@ export class ProductPrismaRepository implements ProductRepository.Repository {
     } catch {
       throw new NotFoundError(`ProductModel not found`);
     }
+  }
+
+  protected async userIsSeller(user_id: string): Promise<boolean> {
+    const user = await this.prismaService.user.findUnique({
+      where: {
+        id: user_id,
+      },
+    });
+
+    if (user.isSeller === false) {
+      throw new ForbiddenError(
+        'You do not have permission to perform this action',
+      );
+    }
+
+    return true;
   }
 }
