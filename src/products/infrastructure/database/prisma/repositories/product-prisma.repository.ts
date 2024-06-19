@@ -94,17 +94,20 @@ export class ProductPrismaRepository implements ProductRepository.Repository {
   }
 
   protected async _get(id: string, user_id?: string): Promise<ProductEntity> {
-    await this.userIsSeller(user_id);
+    const whereClause = { id };
+
+    if (user_id) {
+      await this.userIsSeller(user_id);
+      whereClause['user_id'] = user_id;
+    }
+
     try {
       const product = await this.prismaService.product.findUnique({
-        where: {
-          id,
-          user_id,
-        },
+        where: whereClause,
       });
       return ProductModelMapper.toEntity(product);
     } catch {
-      throw new NotFoundError(`ProductModel not found`);
+      throw new NotFoundError('ProductModel not found');
     }
   }
 
