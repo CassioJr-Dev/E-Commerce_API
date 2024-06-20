@@ -35,6 +35,7 @@ describe('CreateProductUseCase integration tests', () => {
   });
 
   afterAll(async () => {
+    await prismaService.user.deleteMany();
     await prismaService.product.deleteMany();
     module.close;
   });
