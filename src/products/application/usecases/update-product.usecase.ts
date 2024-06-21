@@ -3,7 +3,7 @@ import { BadRequestError } from '@/shared/domain/errors/bad-request-error';
 import { ProductOutput, ProductOutputMapper } from '../dtos/product-output';
 import { ProductRepository } from '@/products/domain/repositories/product.repository';
 
-export namespace UpdateUserUseCase {
+export namespace UpdateProductUseCase {
   export type Input = {
     id: string;
     name?: string;
@@ -27,10 +27,7 @@ export namespace UpdateUserUseCase {
         throw new BadRequestError('No valid properties provided');
       }
 
-      const entity = await this.productRepository.getProductByIdAndUserId(
-        id,
-        user_id,
-      );
+      const entity = await this.productRepository.findById(id, user_id);
 
       name && entity.updateName(name);
       description && entity.updateDescription(description);

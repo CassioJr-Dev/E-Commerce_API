@@ -62,7 +62,10 @@ export class ProductPrismaRepository implements ProductRepository.Repository {
     });
   }
 
-  async findById(id: string): Promise<ProductEntity> {
+  async findById(id: string, user_id?: string): Promise<ProductEntity> {
+    if (user_id) {
+      return this._get(id, user_id);
+    }
     return this._get(id);
   }
 
