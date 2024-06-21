@@ -71,7 +71,7 @@ describe('CreateProductUseCase integration tests', () => {
       ...ProductDataBuilder({}),
       user_id: newUser.id,
     };
-    expect(async () => await sut.execute(props)).rejects.toThrow(
+    await expect(async () => await sut.execute(props)).rejects.toThrow(
       new ForbiddenError('You do not have permission to perform this action'),
     );
   });

@@ -118,6 +118,10 @@ export class ProductPrismaRepository implements ProductRepository.Repository {
       },
     });
 
+    if (!user) {
+      new NotFoundError(`UserModel not found using ID ${user_id}`);
+    }
+
     if (user.isSeller === false) {
       throw new ForbiddenError(
         'You do not have permission to perform this action',
