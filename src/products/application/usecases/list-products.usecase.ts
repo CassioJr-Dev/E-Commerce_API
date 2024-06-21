@@ -8,7 +8,7 @@ import {
 import { ProductOutput, ProductOutputMapper } from '../dtos/product-output';
 import { ProductRepository } from '@/products/domain/repositories/product.repository';
 
-export namespace ListUsersUseCase {
+export namespace ListProductsUseCase {
   export type Input = SearchInput;
 
   export type Output = PaginationOutput<ProductOutput>;
