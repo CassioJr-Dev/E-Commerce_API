@@ -21,6 +21,7 @@ export class ProductPresenter {
     this.description = output.description;
     this.price = output.price;
     this.stock = output.stock;
+    this.user_id = output.user_id;
     this.created_at = output.created_at;
     this.updated_at = output.updated_at;
   }
