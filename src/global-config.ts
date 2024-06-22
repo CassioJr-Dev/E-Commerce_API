@@ -9,6 +9,8 @@ import { ConflictErrorFilter } from './shared/infrastructure/exception-filters/c
 import { NotFoundErrorFilter } from './shared/infrastructure/exception-filters/not-found-error/not-found-error.filter';
 import { InvalidPasswordErrorFilter } from './shared/infrastructure/exception-filters/invalid-password-error/invalid-password-error.filter';
 import { InvalidCredentialsErrorFilter } from './shared/infrastructure/exception-filters/invalid-credentials-error/invalid-credentials-error.filter';
+import { ForbiddenErrorFilter } from './shared/infrastructure/exception-filters/validation-error/forbidden-error.filter';
+import { BadRequestErrorFilter } from './shared/infrastructure/exception-filters/bad-request-error/bad-request-error.filter';
 
 export function applyGlobalConfig(app: INestApplication) {
   app.useGlobalPipes(
@@ -28,5 +30,7 @@ export function applyGlobalConfig(app: INestApplication) {
     new NotFoundErrorFilter(),
     new InvalidPasswordErrorFilter(),
     new InvalidCredentialsErrorFilter(),
+    new ForbiddenErrorFilter(),
+    new BadRequestErrorFilter(),
   );
 }
