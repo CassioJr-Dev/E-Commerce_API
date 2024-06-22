@@ -1,18 +1,19 @@
 import { BadRequestError } from '@/shared/domain/errors/bad-request-error';
 import { Controller, Get, INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { BadRequestErrorFilter } from '../../bad-request-error.filter';
 import request from 'supertest';
+import { ForbiddenErrorFilter } from '../../forbidden-error.filter';
+import { ForbiddenError } from '@/shared/domain/errors/forbidden-error';
 
 @Controller('stub')
 class StubController {
   @Get()
   index() {
-    throw new BadRequestError('Bad Request data');
+    throw new ForbiddenError('Forbidden data');
   }
 }
 
-describe('BadRequestErrorFilter (e2e)', () => {
+describe('ForbiddenErrorFilter (e2e)', () => {
   let app: INestApplication;
   let module: TestingModule;
 
@@ -21,7 +22,7 @@ describe('BadRequestErrorFilter (e2e)', () => {
       controllers: [StubController],
     }).compile();
     app = module.createNestApplication();
-    app.useGlobalFilters(new BadRequestErrorFilter());
+    app.useGlobalFilters(new ForbiddenErrorFilter());
     await app.init();
   });
 
@@ -30,14 +31,14 @@ describe('BadRequestErrorFilter (e2e)', () => {
   });
 
   it('should be defined', () => {
-    expect(new BadRequestErrorFilter()).toBeDefined();
+    expect(new ForbiddenErrorFilter()).toBeDefined();
   });
 
-  it('should catch a BadRequestError', () => {
-    return request(app.getHttpServer()).get('/stub').expect(400).expect({
-      statusCode: 400,
-      error: 'Bad Request',
-      message: 'Bad Request data',
+  it('should catch a ForbiddenError', () => {
+    return request(app.getHttpServer()).get('/stub').expect(403).expect({
+      statusCode: 403,
+      error: 'Forbidden',
+      message: 'Forbidden data',
     });
   });
 });
