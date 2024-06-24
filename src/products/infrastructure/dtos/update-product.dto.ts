@@ -2,7 +2,7 @@ import { UpdateProductUseCase } from '@/products/application/usecases/update-pro
 import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class UpdateProductDto
-  implements Omit<UpdateProductUseCase.Input, 'id'>
+  implements Omit<UpdateProductUseCase.Input, 'id' | 'user_id'>
 {
   @IsOptional()
   @IsString()
@@ -19,8 +19,4 @@ export class UpdateProductDto
   @IsOptional()
   @IsNumber()
   stock?: number;
-
-  @IsNotEmpty()
-  @IsString()
-  user_id: string;
 }

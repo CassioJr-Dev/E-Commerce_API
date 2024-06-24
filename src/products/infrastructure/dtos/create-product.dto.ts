@@ -1,7 +1,9 @@
 import { CreateProductUseCase } from '@/products/application/usecases/create-product.usecase';
 import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
-export class SignupDto implements CreateProductUseCase.Input {
+export class CreateProductDto
+  implements Omit<CreateProductUseCase.Input, 'user_id'>
+{
   @IsString()
   @IsNotEmpty()
   name: string;
@@ -13,12 +15,8 @@ export class SignupDto implements CreateProductUseCase.Input {
   @IsNumber()
   @IsNotEmpty()
   price: number;
-  s;
+
   @IsNumber()
   @IsNotEmpty()
   stock: number;
-
-  @IsString()
-  @IsNotEmpty()
-  user_id: string;
 }

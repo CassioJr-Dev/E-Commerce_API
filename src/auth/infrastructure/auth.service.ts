@@ -24,7 +24,13 @@ export class AuthService {
     });
   }
 
-  async extractPayload(token: string) {
-    return this.jwtService.decode(token);
+  async extractPayload(tokenJwt: string) {
+    const [type, token] = tokenJwt.split(' ') ?? [];
+
+    if (type === 'Bearer') {
+      return this.jwtService.decode(token);
+    }
+
+    return undefined;
   }
 }
