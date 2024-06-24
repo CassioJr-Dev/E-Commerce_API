@@ -23,4 +23,8 @@ export class AuthService {
       secret: this.configService.getJwtSecret(),
     });
   }
+
+  async extractPayload(token: string) {
+    return this.jwtService.decode(token);
+  }
 }
