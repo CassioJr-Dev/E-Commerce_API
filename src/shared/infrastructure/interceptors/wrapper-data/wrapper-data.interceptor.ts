@@ -25,18 +25,25 @@ export class WrapperDataInterceptor implements NestInterceptor {
           return body;
         }
 
-        let user: Object;
+        let entity: Object;
 
         let copyBody = Object.assign({}, body);
         delete copyBody?.accessToken;
 
-        const keys = ['id', 'name', 'isSeller', 'email'];
+        const keysUser = ['id', 'name', 'isSeller', 'email'];
+        const keysProduct = ['id', 'name', 'description', 'price', 'stock'];
 
-        if (keys.every(key => body.hasOwnProperty(key))) {
-          user = { user: copyBody, accessToken: body?.accessToken };
+        const hasKeys = (keys: Array<String>) =>
+          keys.every(key => body.hasOwnProperty(key));
+
+        if (hasKeys(keysUser)) {
+          entity = { user: copyBody, accessToken: body?.accessToken };
+        }
+        if (hasKeys(keysProduct)) {
+          entity = { product: copyBody, accessToken: body?.accessToken };
         }
 
-        return !body || 'meta' in body ? body : { data: user };
+        return !body || 'meta' in body ? body : { data: entity };
       }),
     );
   }
