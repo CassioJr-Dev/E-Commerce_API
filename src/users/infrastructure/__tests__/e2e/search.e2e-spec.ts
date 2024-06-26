@@ -14,6 +14,7 @@ import { instanceToPlain } from 'class-transformer';
 import { UsersController } from '../../users.controller';
 import { HashProvider } from '@/shared/application/providers/hash-provider';
 import { BcryptjsHashProvider } from '../../providers/hash-provider/bcryptjs-hash.provider';
+import { AuthModule } from '@/auth/infrastructure/auth.module';
 
 describe('UsersController e2e tests', () => {
   let app: INestApplication;
@@ -32,6 +33,7 @@ describe('UsersController e2e tests', () => {
         EnvConfigModule,
         UsersModule,
         DatabaseModule.forTest(prismaService),
+        AuthModule,
       ],
     }).compile();
     app = module.createNestApplication();
@@ -56,7 +58,7 @@ describe('UsersController e2e tests', () => {
       .post('/users/login')
       .send({ email: 'a@a.com', password: '1234' })
       .expect(200);
-    accessToken = loginResponse.body.accessToken;
+    accessToken = loginResponse.body.data.accessToken;
   });
 
   describe('GET /users', () => {
@@ -101,7 +103,7 @@ describe('UsersController e2e tests', () => {
       });
     });
 
-    it('Should return the users ordered by created_at', async () => {
+    it('Should return the users ordered by name', async () => {
       const entities: UserEntity[] = [];
       const arrange = ['test', 'a', 'TEST', 'b', 'TeSt'];
       arrange.forEach((element, index) => {
