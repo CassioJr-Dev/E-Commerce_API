@@ -26,9 +26,7 @@ export namespace CreateProductUseCase {
       }
 
       const entity = new ProductEntity(input);
-      console.log('chegou aqui 1');
       await this.productRepository.insert(entity);
-      console.log('chegou aqui 2');
       return ProductOutputMapper.toOutput(entity);
     }
   }
