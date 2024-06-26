@@ -2,7 +2,7 @@ import { EnvConfigService } from '@/shared/infrastructure/env-config/env-config.
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
-type GenerateJwtProps = {
+export type GenerateJwtProps = {
   accessToken: string;
 };
 

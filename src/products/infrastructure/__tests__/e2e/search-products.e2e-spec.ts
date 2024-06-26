@@ -6,7 +6,6 @@ import { setupPrismaTests } from '@/users/infrastructure/database/prisma/testing
 import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaClient } from '@prisma/client';
-import request from 'supertest';
 import { ProductsModule } from '../../products.module';
 import { applyGlobalConfig } from '@/global-config';
 import { UserEntity } from '@/users/domain/entities/user.entity';
@@ -14,18 +13,21 @@ import { UserDataBuilder } from '@/users/domain/testing/helpers/user-data-builde
 import { instanceToPlain } from 'class-transformer';
 import { ProductsController } from '../../products.controller';
 import { ProductDataBuilder } from '@/products/domain/testing/helpers/product-data-builder';
-import { AuthService } from '@/auth/infrastructure/auth.service';
+import {
+  AuthService,
+  GenerateJwtProps,
+} from '@/auth/infrastructure/auth.service';
 import { AuthModule } from '@/auth/infrastructure/auth.module';
+import request from 'supertest';
 
 describe('UsersController e2e tests', () => {
   let app: INestApplication;
   let module: TestingModule;
   let repository: ProductRepository.Repository;
-  let entity: ProductEntity;
   const prismaService = new PrismaClient();
   let authService: AuthService;
   let userEntity: UserEntity;
-  let generateJwt;
+  let generateJwt: GenerateJwtProps;
   let accessToken: string;
 
   beforeAll(async () => {

@@ -14,7 +14,10 @@ import { instanceToPlain } from 'class-transformer';
 import { UserEntity } from '@/users/domain/entities/user.entity';
 import { UserDataBuilder } from '@/users/domain/testing/helpers/user-data-builder';
 import { AuthModule } from '@/auth/infrastructure/auth.module';
-import { AuthService } from '@/auth/infrastructure/auth.service';
+import {
+  AuthService,
+  GenerateJwtProps,
+} from '@/auth/infrastructure/auth.service';
 
 describe('ProductsController e2e tests', () => {
   let app: INestApplication;
@@ -24,7 +27,7 @@ describe('ProductsController e2e tests', () => {
   const prismaService = new PrismaClient();
   let user: UserEntity;
   let authService: AuthService;
-  let generateJwt;
+  let generateJwt: GenerateJwtProps;
   let jwt: string;
 
   beforeAll(async () => {
