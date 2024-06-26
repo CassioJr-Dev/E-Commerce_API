@@ -24,11 +24,11 @@ export class AuthService {
     });
   }
 
-  async extractPayload(tokenJwt: string) {
+  async extractPayload(tokenJwt: string): Promise<string> {
     const [type, token] = tokenJwt.split(' ') ?? [];
 
     if (type === 'Bearer') {
-      return this.jwtService.decode(token);
+      return this.jwtService.decode(token).id;
     }
 
     return undefined;
