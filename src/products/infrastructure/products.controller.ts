@@ -63,10 +63,11 @@ export class ProductsController {
     @Headers('authorization') authorization: string,
   ) {
     const extractUserId = await this.authService.extractPayload(authorization);
-    return this.createProductUseCase.execute({
+    const output = await this.createProductUseCase.execute({
       ...createpDto,
       user_id: extractUserId,
     });
+    return ProductsController.productToResponse(output);
   }
 
   @Get()
