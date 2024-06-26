@@ -5,9 +5,7 @@ import { EnvConfigModule } from './shared/infrastructure/env-config/env-config.m
 import { UsersModule } from './users/infrastructure/users.module';
 import { DatabaseModule } from './shared/infrastructure/database/database.module';
 import { AuthModule } from './auth/infrastructure/auth.module';
-import { ProductsModule } from './src/products/infrastructure/products/products.module';
-import { ProductsModule } from './products/infrastructure/products/products.module';
-import { ProductsModule } from './src/products/infrastructure/products/products.module';
+import { ProductsModule } from './products/infrastructure/products.module';
 
 @Module({
   imports: [
