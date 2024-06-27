@@ -60,7 +60,7 @@ export class ProductsController {
   @Post()
   async create(
     @Body() createpDto: CreateProductDto,
-    @Headers('authorization') authorization: string,
+    @Headers('Authorization') authorization: string,
   ) {
     const extractUserId = await this.authService.extractPayload(authorization);
     const output = await this.createProductUseCase.execute({
@@ -87,7 +87,7 @@ export class ProductsController {
   async update(
     @Param('id') id: string,
     @Body() updateProductDto: UpdateProductDto,
-    @Headers('authorization') authorization: string,
+    @Headers('Authorization') authorization: string,
   ) {
     const extractUserId = await this.authService.extractPayload(authorization);
     const output = await this.updateProductUseCase.execute({
@@ -103,7 +103,7 @@ export class ProductsController {
   @Delete(':id')
   async remove(
     @Param('id') id: string,
-    @Headers('authorization') authorization: string,
+    @Headers('Authorization') authorization: string,
   ) {
     const extractUserId = await this.authService.extractPayload(authorization);
     await this.deleteProductUseCase.execute({

@@ -20,7 +20,7 @@ import { ProductsController } from '../../products.controller';
 import { instanceToPlain } from 'class-transformer';
 import { ProductDataBuilder } from '@/products/domain/testing/helpers/product-data-builder';
 
-describe('UsersController e2e tests', () => {
+describe('ProductsController e2e tests', () => {
   let app: INestApplication;
   let module: TestingModule;
   let repository: ProductRepository.Repository;

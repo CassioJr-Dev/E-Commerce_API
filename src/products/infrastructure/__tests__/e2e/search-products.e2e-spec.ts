@@ -20,7 +20,7 @@ import {
 import { AuthModule } from '@/auth/infrastructure/auth.module';
 import request from 'supertest';
 
-describe('UsersController e2e tests', () => {
+describe('ProductsController e2e tests', () => {
   let app: INestApplication;
   let module: TestingModule;
   let repository: ProductRepository.Repository;

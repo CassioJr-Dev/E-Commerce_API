@@ -28,7 +28,7 @@ describe('ProductsController e2e tests', () => {
   let user: UserEntity;
   let authService: AuthService;
   let generateJwt: GenerateJwtProps;
-  let jwt: string;
+  let accessToken: string;
 
   beforeAll(async () => {
     setupPrismaTests();
@@ -63,7 +63,7 @@ describe('ProductsController e2e tests', () => {
     };
 
     generateJwt = await authService.generateJwt(user.id);
-    jwt = `Bearer ${generateJwt.accessToken} `;
+    accessToken = `Bearer ${generateJwt.accessToken} `;
   });
 
   afterAll(async () => {
@@ -75,7 +75,7 @@ describe('ProductsController e2e tests', () => {
     it('Should create a product', async () => {
       const res = await request(app.getHttpServer())
         .post('/products')
-        .set('authorization', jwt)
+        .set('Authorization', accessToken)
         .send(createProductDto)
         .expect(201);
 
@@ -90,7 +90,7 @@ describe('ProductsController e2e tests', () => {
     it('Should return a error with 422 code when the request body is invalid', async () => {
       const res = await request(app.getHttpServer())
         .post('/products')
-        .set('authorization', jwt)
+        .set('Authorization', accessToken)
         .send({})
         .expect(422);
       expect(res.body.error).toBe('Unprocessable Entity');
@@ -108,7 +108,7 @@ describe('ProductsController e2e tests', () => {
       delete createProductDto.name;
       const res = await request(app.getHttpServer())
         .post('/products')
-        .set('authorization', jwt)
+        .set('Authorization', accessToken)
         .send(createProductDto)
         .expect(422);
       expect(res.body.error).toBe('Unprocessable Entity');
@@ -122,7 +122,7 @@ describe('ProductsController e2e tests', () => {
       delete createProductDto.price;
       const res = await request(app.getHttpServer())
         .post('/products')
-        .set('authorization', jwt)
+        .set('Authorization', accessToken)
         .send(createProductDto)
         .expect(422);
       expect(res.body.error).toBe('Unprocessable Entity');
@@ -136,7 +136,7 @@ describe('ProductsController e2e tests', () => {
       delete createProductDto.stock;
       const res = await request(app.getHttpServer())
         .post('/products')
-        .set('authorization', jwt)
+        .set('Authorization', accessToken)
         .send(createProductDto)
         .expect(422);
       expect(res.body.error).toBe('Unprocessable Entity');
@@ -149,14 +149,14 @@ describe('ProductsController e2e tests', () => {
     it('Should return a error with 422 code with invalid field provided', async () => {
       const res = await request(app.getHttpServer())
         .post('/products')
-        .set('authorization', jwt)
+        .set('Authorization', accessToken)
         .send(Object.assign(createProductDto, { xpto: 'fake' }))
         .expect(422);
       expect(res.body.error).toBe('Unprocessable Entity');
       expect(res.body.message).toEqual(['property xpto should not exist']);
     });
 
-    it('Should return a error with 422 code when authorization header not provided', async () => {
+    it('Should return a error with 422 code when Authorization header not provided', async () => {
       const res = await request(app.getHttpServer())
         .post('/products')
         .send(createProductDto)
@@ -169,12 +169,12 @@ describe('ProductsController e2e tests', () => {
       await prismaService.user.create({ data: userEntity });
 
       const generate = await authService.generateJwt(userEntity.id);
-      const accessToken = `Bearer ${generate.accessToken} `;
+      const newAccessToken = `Bearer ${generate.accessToken} `;
 
       const res = await request(app.getHttpServer())
         .post('/products')
         .send(createProductDto)
-        .set('authorization', accessToken)
+        .set('Authorization', newAccessToken)
         .expect(403)
         .expect({
           statusCode: 403,
