@@ -9,9 +9,9 @@ import { UsersModule } from '../../users.module';
 import { DatabaseModule } from '@/shared/infrastructure/database/database.module';
 import { applyGlobalConfig } from '@/global-config';
 import { UserDataBuilder } from '@/users/domain/testing/helpers/user-data-builder';
-import request from 'supertest';
 import { HashProvider } from '@/shared/application/providers/hash-provider';
 import { BcryptjsHashProvider } from '../../providers/hash-provider/bcryptjs-hash.provider';
+import request from 'supertest';
 
 describe('UsersController e2e tests', () => {
   let app: INestApplication;
@@ -53,7 +53,7 @@ describe('UsersController e2e tests', () => {
       .post('/users/login')
       .send({ email: 'a@a.com', password: '1234' })
       .expect(200);
-    accessToken = loginResponse.body.accessToken;
+    accessToken = loginResponse.body.data.accessToken;
   });
 
   describe('DELETE /users/:id', () => {

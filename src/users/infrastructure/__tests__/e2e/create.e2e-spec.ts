@@ -7,12 +7,12 @@ import { setupPrismaTests } from '../../database/prisma/testing/setup-prisma-tes
 import { EnvConfigModule } from '@/shared/infrastructure/env-config/env-config.module';
 import { UsersModule } from '../../users.module';
 import { DatabaseModule } from '@/shared/infrastructure/database/database.module';
-import request from 'supertest';
 import { UsersController } from '../../users.controller';
 import { instanceToPlain } from 'class-transformer';
 import { applyGlobalConfig } from '@/global-config';
 import { UserEntity } from '@/users/domain/entities/user.entity';
 import { UserDataBuilder } from '@/users/domain/testing/helpers/user-data-builder';
+import request from 'supertest';
 
 describe('UserController e2e tests', () => {
   let app: INestApplication;
@@ -58,11 +58,11 @@ describe('UserController e2e tests', () => {
         .expect(201);
 
       expect(Object.keys(res.body)).toStrictEqual(['data']);
-      const user = await repository.findById(res.body.data.id);
+      const user = await repository.findById(res.body.data.user.id);
       const presenter = UsersController.userToResponse(user.toJSON());
       const serialized = instanceToPlain(presenter);
 
-      expect(res.body.data).toStrictEqual(serialized);
+      expect(res.body.data.user).toStrictEqual(serialized);
     });
 
     it('Should return a error with 422 code when the request body is invalid', async () => {

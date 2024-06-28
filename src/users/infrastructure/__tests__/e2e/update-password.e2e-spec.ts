@@ -55,7 +55,7 @@ describe('UsersController e2e tests', () => {
       .post('/users/login')
       .send({ email: 'a@a.com', password: 'old_password' })
       .expect(200);
-    accessToken = loginResponse.body.accessToken;
+    accessToken = loginResponse.body.data.accessToken;
   });
 
   describe('POST /users', () => {
@@ -66,7 +66,7 @@ describe('UsersController e2e tests', () => {
         .send(updatePasswordDto)
         .expect(200);
       expect(Object.keys(res.body)).toStrictEqual(['data']);
-      const user = await repository.findById(res.body.data.id);
+      const user = await repository.findById(res.body.data.user.id);
       const checkNewPassword = await hashProvider.compareHash(
         'new_password',
         user.password,

@@ -40,7 +40,7 @@ export class WrapperDataInterceptor implements NestInterceptor {
           entity = { user: copyBody, accessToken: body?.accessToken };
         }
         if (hasKeys(keysProduct)) {
-          entity = { product: copyBody, accessToken: body?.accessToken };
+          entity = { product: copyBody };
         }
 
         return !body || 'meta' in body ? body : { data: entity };

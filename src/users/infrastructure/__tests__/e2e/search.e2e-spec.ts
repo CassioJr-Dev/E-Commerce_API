@@ -9,12 +9,12 @@ import { UsersModule } from '../../users.module';
 import { applyGlobalConfig } from '@/global-config';
 import { UserEntity } from '@/users/domain/entities/user.entity';
 import { UserDataBuilder } from '@/users/domain/testing/helpers/user-data-builder';
-import request from 'supertest';
 import { instanceToPlain } from 'class-transformer';
 import { UsersController } from '../../users.controller';
 import { HashProvider } from '@/shared/application/providers/hash-provider';
 import { BcryptjsHashProvider } from '../../providers/hash-provider/bcryptjs-hash.provider';
 import { AuthModule } from '@/auth/infrastructure/auth.module';
+import request from 'supertest';
 
 describe('UsersController e2e tests', () => {
   let app: INestApplication;

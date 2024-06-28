@@ -10,11 +10,11 @@ import { UsersModule } from '../../users.module';
 import { DatabaseModule } from '@/shared/infrastructure/database/database.module';
 import { applyGlobalConfig } from '@/global-config';
 import { UserDataBuilder } from '@/users/domain/testing/helpers/user-data-builder';
-import request from 'supertest';
 import { UsersController } from '../../users.controller';
 import { instanceToPlain } from 'class-transformer';
 import { HashProvider } from '@/shared/application/providers/hash-provider';
 import { BcryptjsHashProvider } from '../../providers/hash-provider/bcryptjs-hash.provider';
+import request from 'supertest';
 
 describe('UsersController unit tests', () => {
   let app: INestApplication;
@@ -62,7 +62,7 @@ describe('UsersController unit tests', () => {
       .post('/users/login')
       .send({ email: 'a@a.com', password: '1234' })
       .expect(200);
-    accessToken = loginResponse.body.accessToken;
+    accessToken = loginResponse.body.data.accessToken;
   });
 
   describe('PUT /users/:id', () => {
@@ -75,21 +75,17 @@ describe('UsersController unit tests', () => {
       const user = await repository.findById(entity._id);
       const presenter = UsersController.userToResponse(user.toJSON());
       const serialized = instanceToPlain(presenter);
-      expect(res.body.data).toStrictEqual(serialized);
+      expect(res.body.data.user).toStrictEqual(serialized);
     });
 
-    it('Should return a error with 422 code when the request body is invalid', async () => {
+    it('Should return a error with 400 code when the request body is invalid', async () => {
       const res = await request(app.getHttpServer())
         .put(`/users/${entity._id}`)
         .set('Authorization', `Bearer ${accessToken}`)
         .send({})
-        .expect(422);
-      expect(res.body.error).toBe('Unprocessable Entity');
-      expect(res.body.message).toEqual([
-        'name must be a string',
-        'isSeller must be a boolean value',
-        'email must be an email',
-      ]);
+        .expect(400);
+      expect(res.body.error).toBe('Bad Request');
+      expect(res.body.message).toEqual('No valid properties provided');
     });
 
     it('Should return a error with 404 code when throw NotFoundError with invalid id', async () => {

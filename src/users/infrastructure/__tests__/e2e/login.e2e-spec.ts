@@ -61,8 +61,8 @@ describe('UserController e2e tests', () => {
         .post('/users/login')
         .send(signinDto)
         .expect(200);
-      expect(Object.keys(res.body)).toStrictEqual(['accessToken']);
-      expect(typeof res.body.accessToken).toEqual('string');
+      expect(Object.keys(res.body.data)).toStrictEqual(['user', 'accessToken']);
+      expect(typeof res.body.data.accessToken).toEqual('string');
     });
 
     it('Should return a error with 422 code when the request body is invalid', async () => {
