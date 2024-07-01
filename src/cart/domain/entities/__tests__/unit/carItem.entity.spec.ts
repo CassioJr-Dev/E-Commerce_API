@@ -1,4 +1,4 @@
-import { CartItemEntity, CartItemProps } from "../../cartItem.entity";
+import { CartItemEntity, CartItemProps } from '../../cartItem.entity';
 
 describe('CartItemEntity unit tests', () => {
   let props: CartItemProps;
@@ -8,8 +8,8 @@ describe('CartItemEntity unit tests', () => {
     props = {
       cart_id: 'f0e0eabc-5821-43d0-bf5d-b9d8e4f4be8f',
       product_id: '1e4b9f2b-6a98-4f02-b42f-14c1c4b1c43a',
-      quantity: 5
-    }
+      quantity: 5,
+    };
 
     sut = new CartItemEntity(props);
   });
@@ -64,5 +64,4 @@ describe('CartItemEntity unit tests', () => {
     expect(toDateSpy).toHaveBeenCalledTimes(1);
     expect(sut.quantity).toEqual(10);
   });
-
 });
