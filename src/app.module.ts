@@ -6,6 +6,7 @@ import { UsersModule } from './users/infrastructure/users.module';
 import { DatabaseModule } from './shared/infrastructure/database/database.module';
 import { AuthModule } from './auth/infrastructure/auth.module';
 import { ProductsModule } from './products/infrastructure/products.module';
+import { CartModule } from './cart/cart.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { ProductsModule } from './products/infrastructure/products.module';
     DatabaseModule,
     AuthModule,
     ProductsModule,
+    CartModule,
   ],
   controllers: [AppController],
   providers: [AppService],

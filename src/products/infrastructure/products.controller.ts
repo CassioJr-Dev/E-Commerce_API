@@ -27,7 +27,12 @@ import { CreateProductDto } from './dtos/create-product.dto';
 import { AuthGuard } from '@/auth/infrastructure/auth.guard';
 import { ListProductsDto } from './dtos/list-products.dto';
 import { UpdateProductDto } from './dtos/update-product.dto';
-import { ApiBearerAuth, ApiResponse, ApiTags, getSchemaPath } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiResponse,
+  ApiTags,
+  getSchemaPath,
+} from '@nestjs/swagger';
 
 @ApiTags('products')
 @Controller('products')
