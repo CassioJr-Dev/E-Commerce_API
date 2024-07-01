@@ -1,7 +1,7 @@
 import { Entity } from '@/shared/domain/entities/entity';
 
 export type CartItemProps = {
-  cart_id: string
+  cart_id: string;
   product_id: string;
   quantity: number;
 };
@@ -14,6 +14,11 @@ export class CartItemEntity extends Entity<CartItemProps> {
     updated_at?: Date,
   ) {
     super(props, id, created_at, updated_at);
+  }
+
+  updateQuantity(value: number) {
+    this.quantity = value;
+    this.updated_at = this.toDate();
   }
 
   get cart_id() {
