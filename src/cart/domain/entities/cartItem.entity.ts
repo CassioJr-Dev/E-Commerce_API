@@ -1,4 +1,6 @@
 import { Entity } from '@/shared/domain/entities/entity';
+import { CartItemValidatorFactory } from '../validators/cartItem-validator';
+import { EntityValidationError } from '@/shared/domain/errors/validation-error';
 
 export type CartItemProps = {
   cart_id: string;
@@ -43,5 +45,13 @@ export class CartItemEntity extends Entity<CartItemProps> {
 
   set quantity(value: number) {
     this.props.quantity = value;
+  }
+
+  static validate(props: CartItemProps) {
+    const validator = CartItemValidatorFactory.create();
+    const isValidate = validator.validate(props);
+    if (!isValidate) {
+      throw new EntityValidationError(validator.errors);
+    }
   }
 }
