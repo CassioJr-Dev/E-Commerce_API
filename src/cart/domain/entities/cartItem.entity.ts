@@ -15,10 +15,12 @@ export class CartItemEntity extends Entity<CartItemProps> {
     created_at?: Date,
     updated_at?: Date,
   ) {
+    CartItemEntity.validate(props);
     super(props, id, created_at, updated_at);
   }
 
   updateQuantity(value: number) {
+    CartItemEntity.validate({ ...this.props, quantity: value });
     this.quantity = value;
     this.updated_at = this.toDate();
   }
