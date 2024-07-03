@@ -2,7 +2,7 @@ import { ProductEntity } from '@/products/domain/entities/product.entity';
 import { ProductRepository } from '@/products/domain/repositories/product.repository';
 import { DatabaseModule } from '@/shared/infrastructure/database/database.module';
 import { EnvConfigModule } from '@/shared/infrastructure/env-config/env-config.module';
-import { setupPrismaTests } from '@/users/infrastructure/database/prisma/testing/setup-prisma-tests';
+import { setupPrismaTests } from '@/shared/infrastructure/database/testing/setup-prisma-tests';
 import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaClient } from '@prisma/client';

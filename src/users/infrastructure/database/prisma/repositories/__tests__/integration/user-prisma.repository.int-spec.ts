@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { UserPrismaRepository } from '../../user-prisma.repository';
 import { Test, TestingModule } from '@nestjs/testing';
-import { setupPrismaTests } from '../../../testing/setup-prisma-tests';
+import { setupPrismaTests } from '../../../../../../../shared/infrastructure/database/testing/setup-prisma-tests';
 import { DatabaseModule } from '@/shared/infrastructure/database/database.module';
 import { NotFoundError } from '@/shared/domain/errors/not-found-error';
 import { UserEntity } from '@/users/domain/entities/user.entity';

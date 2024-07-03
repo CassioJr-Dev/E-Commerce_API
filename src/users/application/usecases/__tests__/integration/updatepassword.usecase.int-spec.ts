@@ -3,7 +3,7 @@ import { UpdatePasswordUseCase } from '../../update-password.usecase';
 import { UserPrismaRepository } from '@/users/infrastructure/database/prisma/repositories/user-prisma.repository';
 import { Test, TestingModule } from '@nestjs/testing';
 import { HashProvider } from '@/shared/application/providers/hash-provider';
-import { setupPrismaTests } from '@/users/infrastructure/database/prisma/testing/setup-prisma-tests';
+import { setupPrismaTests } from '@/shared/infrastructure/database/testing/setup-prisma-tests';
 import { DatabaseModule } from '@/shared/infrastructure/database/database.module';
 import { BcryptjsHashProvider } from '@/users/infrastructure/providers/hash-provider/bcryptjs-hash.provider';
 import { UserEntity } from '@/users/domain/entities/user.entity';

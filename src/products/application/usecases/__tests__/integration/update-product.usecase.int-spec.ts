@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client';
 import { UpdateProductUseCase } from '../../update-product.usecase';
 import { ProductPrismaRepository } from '@/products/infrastructure/database/prisma/repositories/product-prisma.repository';
 import { Test, TestingModule } from '@nestjs/testing';
-import { setupPrismaTests } from '@/users/infrastructure/database/prisma/testing/setup-prisma-tests';
+import { setupPrismaTests } from '@/shared/infrastructure/database/testing/setup-prisma-tests';
 import { DatabaseModule } from '@/shared/infrastructure/database/database.module';
 import { ProductEntity } from '@/products/domain/entities/product.entity';
 import { ProductDataBuilder } from '@/products/domain/testing/helpers/product-data-builder';

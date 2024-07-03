@@ -1,6 +1,6 @@
 import { PrismaClient, Product, User } from '@prisma/client';
 import { ValidationError } from '@/shared/domain/errors/validation-error';
-import { setupPrismaTests } from '@/users/infrastructure/database/prisma/testing/setup-prisma-tests';
+import { setupPrismaTests } from '@/shared/infrastructure/database/testing/setup-prisma-tests';
 import { ProductModelMapper } from '../../product-model.mapper';
 import { ProductEntity } from '@/products/domain/entities/product.entity';
 import { UserEntity } from '@/users/domain/entities/user.entity';

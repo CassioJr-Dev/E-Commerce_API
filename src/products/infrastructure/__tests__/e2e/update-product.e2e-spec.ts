@@ -10,7 +10,7 @@ import {
   AuthService,
   GenerateJwtProps,
 } from '@/auth/infrastructure/auth.service';
-import { setupPrismaTests } from '@/users/infrastructure/database/prisma/testing/setup-prisma-tests';
+import { setupPrismaTests } from '@/shared/infrastructure/database/testing/setup-prisma-tests';
 import { EnvConfigModule } from '@/shared/infrastructure/env-config/env-config.module';
 import { ProductsModule } from '../../products.module';
 import { DatabaseModule } from '@/shared/infrastructure/database/database.module';

@@ -5,7 +5,7 @@ import { UpdatePasswordDto } from '../../dtos/update-password.dto';
 import { PrismaClient } from '@prisma/client';
 import { HashProvider } from '@/shared/application/providers/hash-provider';
 import { UserEntity } from '@/users/domain/entities/user.entity';
-import { setupPrismaTests } from '../../database/prisma/testing/setup-prisma-tests';
+import { setupPrismaTests } from '../../../../shared/infrastructure/database/testing/setup-prisma-tests';
 import { EnvConfigModule } from '@/shared/infrastructure/env-config/env-config.module';
 import { UsersModule } from '../../users.module';
 import { DatabaseModule } from '@/shared/infrastructure/database/database.module';
