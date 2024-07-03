@@ -14,28 +14,57 @@ datasource db {
 }
 
 model User {
-  id            String    @id @db.Text
-  name          String    @db.VarChar(255)
-  isSeller      Boolean   @db.Boolean
-  email         String    @unique @db.VarChar(255)
-  password      String    @db.VarChar(100)
+  id            String      @id @db.Text
+  name          String      @db.VarChar(255)
+  isSeller      Boolean     @db.Boolean
+  email         String      @unique @db.VarChar(255)
+  password      String      @db.VarChar(100)
   created_at    DateTime
   updated_at    DateTime
+
   product       Product[]
+  cart          Cart[]
 
   @@map("users")
 }
 
 model Product {
-  id            String    @id @db.Text
-  name          String    @db.Text
-  description   String?   @db.Text
-  price         Decimal   @db.Decimal(10, 2)
+  id            String      @id @db.Text
+  name          String      @db.Text
+  description   String?     @db.Text
+  price         Decimal     @db.Decimal(10, 2)
   stock         Int
   user          User        @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id       String
   created_at    DateTime
   updated_at    DateTime
 
+  CartItem      CartItem[]
+
   @@map("products")
+}
+
+model Cart {
+  id            String      @id @db.Text
+  user          User        @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id       String
+  created_at    DateTime
+  updated_at    DateTime
+
+  cart          CartItem[]
+
+  @@map("cart")
+}
+
+model CartItem {
+  id            String      @id @db.Text
+  cart          Cart        @relation(fields: [cart_id], references: [id], onDelete: Cascade)
+  cart_id       String
+  product       Product     @relation(fields: [product_id], references: [id], onDelete: Cascade)
+  product_id    String
+  quantity      Int
+  created_at    DateTime
+  updated_at    DateTime
+
+  @@map("cartItem")
 }
