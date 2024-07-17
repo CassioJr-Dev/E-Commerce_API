@@ -18,16 +18,12 @@ export class CartPrismaRepository
     }
 
     await this.prismaService.cartItem.create({
-      data: item,
+      data: item.toJSON(),
     });
   }
 
   async removeItemFromCart(item_id: string, cart_id: string): Promise<void> {
-    const itemExists = await this.itemExists(item_id, cart_id);
-
-    if (!itemExists) {
-      throw new NotFoundError('Item not found');
-    }
+    await this.itemExists(item_id, cart_id);
 
     await this.prismaService.cartItem.delete({
       where: { id: item_id, cart_id },
@@ -41,13 +37,10 @@ export class CartPrismaRepository
   ): Promise<CartItemEntity> {
     const item = await this.itemExists(item_id, cart_id);
 
-    if (!item) {
-      throw new NotFoundError('Item not found');
-    }
     const updateItem = await this.prismaService.cartItem.update({
       where: { id: item.id, cart_id: item.cart_id },
       data: {
-        ...item,
+        ...item.toJSON(),
         quantity,
       },
     });
@@ -93,6 +86,10 @@ export class CartPrismaRepository
     const findItem = await this.prismaService.cartItem.findUnique({
       where: { id: item_id, cart_id: cart_id },
     });
+
+    if (!findItem) {
+      throw new NotFoundError('Item not found');
+    }
 
     return CartItemModelMapper.toEntity(findItem);
   }
