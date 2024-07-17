@@ -3,18 +3,22 @@ import { NotFoundError } from '@/shared/domain/errors/not-found-error';
 import { CartAndCartItemRepository } from '@/cart/domain/repositories/cart.repository';
 import { CartItemEntity } from '@/cart/domain/entities/cartItem.entity';
 import { CartEntity } from '@/cart/domain/entities/cart.entity';
-import { CartItemModelMapper } from '../models/cart-model.mapper';
+import {
+  CartItemModelMapper,
+  CartModelMapper,
+} from '../models/cart-model.mapper';
+import { ConflictError } from '@/shared/domain/errors/conflict-error';
 
 export class CartPrismaRepository
   implements CartAndCartItemRepository.Repository
 {
   constructor(private prismaService: PrismaService) {}
 
-  async addItemToCart(cart: CartEntity, item: CartItemEntity): Promise<void> {
-    const cartExists = await this.cartExists(cart.id, cart.user_id);
+  async addItemToCart(item: CartItemEntity, user_id: string): Promise<void> {
+    const cartExists = await this.cartExists(item.cart_id, user_id);
 
     if (!cartExists) {
-      await this.createCart(cart);
+      throw new NotFoundError('Cart not found');
     }
 
     await this.prismaService.cartItem.create({
@@ -94,9 +98,25 @@ export class CartPrismaRepository
     return CartItemModelMapper.toEntity(findItem);
   }
 
-  protected async createCart(cart: CartEntity): Promise<void> {
+  async createCart(cart: CartEntity): Promise<void> {
+    const cartExists = await this.cartExists(cart.id, cart.user_id);
+    if (cartExists) {
+      throw new ConflictError('Cart already exists');
+    }
     await this.prismaService.cart.create({
-      data: cart,
+      data: cart.toJSON(),
     });
+  }
+
+  async findCart(cart_id: string, user_id: string): Promise<CartEntity> {
+    const findCart = await this.prismaService.cart.findUnique({
+      where: { id: cart_id, user_id: user_id },
+    });
+
+    if (!findCart) {
+      throw new NotFoundError('Cart not found');
+    }
+
+    return CartModelMapper.toEntity(findCart);
   }
 }

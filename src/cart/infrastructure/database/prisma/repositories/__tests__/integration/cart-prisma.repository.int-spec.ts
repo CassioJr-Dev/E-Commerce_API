@@ -10,6 +10,7 @@ import { ProductDataBuilder } from '@/products/domain/testing/helpers/product-da
 import { CartEntity } from '@/cart/domain/entities/cart.entity';
 import { CartItemEntity } from '@/cart/domain/entities/cartItem.entity';
 import { NotFoundError } from '@/shared/domain/errors/not-found-error';
+import { ConflictError } from '@/shared/domain/errors/conflict-error';
 
 describe('CartPrismaRepository integration tests', () => {
   const prismaService = new PrismaClient();
@@ -70,6 +71,24 @@ describe('CartPrismaRepository integration tests', () => {
     await prismaService.user.deleteMany();
   });
 
+  it('Should throws error when Cart already exists', async () => {
+    await sut.createCart(cart);
+    await expect(() => sut.createCart(cart)).rejects.toThrow(
+      new ConflictError('Cart already exists'),
+    );
+  });
+
+  it('Should create a cart', async () => {
+    await sut.createCart(cart);
+
+    const result = await prismaService.cart.findUnique({
+      where: {
+        id: cart._id,
+      },
+    });
+    expect(result).toStrictEqual(cart.toJSON());
+  });
+
   it('Should throws error when Cart not found', async () => {
     await expect(() => sut.findAll(cart._id, userProps.id)).rejects.toThrow(
       new NotFoundError('Cart not found'),
@@ -77,7 +96,8 @@ describe('CartPrismaRepository integration tests', () => {
   });
 
   it('Should insert a item to cart', async () => {
-    await sut.addItemToCart(cart, cartItem);
+    await sut.createCart(cart);
+    await sut.addItemToCart(cartItem, cart.user_id);
 
     const result = await prismaService.cartItem.findUnique({
       where: {
@@ -88,7 +108,8 @@ describe('CartPrismaRepository integration tests', () => {
   });
 
   it('Should returns all cartItems', async () => {
-    await sut.addItemToCart(cart, cartItem);
+    await sut.createCart(cart);
+    await sut.addItemToCart(cartItem, cart.user_id);
     const entities = await sut.findAll(cart.id, userProps._id);
 
     expect(entities).toHaveLength(1);
@@ -99,7 +120,8 @@ describe('CartPrismaRepository integration tests', () => {
   });
 
   it('Should throws error on update when a entity not found', async () => {
-    await sut.addItemToCart(cart, cartItem);
+    await sut.createCart(cart);
+    await sut.addItemToCart(cartItem, cart.user_id);
     const entity = new UserEntity(UserDataBuilder({}));
 
     await expect(() =>
@@ -108,7 +130,8 @@ describe('CartPrismaRepository integration tests', () => {
   });
 
   it('Should update a entity', async () => {
-    await sut.addItemToCart(cart, cartItem);
+    await sut.createCart(cart);
+    await sut.addItemToCart(cartItem, cart.user_id);
 
     cartItem.updateQuantity(20);
     await sut.updateQuantity(cart.id, cartItem.id, cartItem.quantity);
@@ -129,7 +152,8 @@ describe('CartPrismaRepository integration tests', () => {
   });
 
   it('Should delete a cart', async () => {
-    await sut.addItemToCart(cart, cartItem);
+    await sut.createCart(cart);
+    await sut.addItemToCart(cartItem, cart.user_id);
     await sut.deleteCart(cart.id, userProps.id);
 
     const output = await prismaService.cart.findUnique({
@@ -141,13 +165,15 @@ describe('CartPrismaRepository integration tests', () => {
     expect(output).toBeNull();
   });
   it('Should throws error on delete when item not found', async () => {
+    await sut.createCart(cart);
     await expect(() =>
       sut.removeItemFromCart('fakeId', cart.id),
     ).rejects.toThrow(new NotFoundError('Item not found'));
   });
 
   it('Should delete a item', async () => {
-    await sut.addItemToCart(cart, cartItem);
+    await sut.createCart(cart);
+    await sut.addItemToCart(cartItem, cart.user_id);
     await sut.removeItemFromCart(cartItem.id, cart.id);
 
     const output = await prismaService.cartItem.findUnique({
@@ -157,5 +183,24 @@ describe('CartPrismaRepository integration tests', () => {
     });
 
     expect(output).toBeNull();
+  });
+
+  it('Should throws error on find when cart not found', async () => {
+    await expect(() => sut.findCart('fakeId', userProps.id)).rejects.toThrow(
+      new NotFoundError('Cart not found'),
+    );
+  });
+
+  it('Should find a cart', async () => {
+    await sut.createCart(cart);
+    await sut.findCart(cart.id, cart.user_id);
+
+    const output = await prismaService.cart.findUnique({
+      where: {
+        id: cart.id,
+      },
+    });
+
+    expect(output).toMatchObject({ user_id: cart.user_id });
   });
 });
