@@ -1,7 +1,7 @@
 import { CartAndCartItemRepository } from '@/cart/domain/repositories/cart.repository';
 import { UseCase as DefaultUseCase } from '../../../shared/application/usecases/use-case';
 
-export namespace AddItemUseCase {
+export namespace DeleteCartUseCase {
   export type Input = {
     cart_id: string;
     user_id: string;

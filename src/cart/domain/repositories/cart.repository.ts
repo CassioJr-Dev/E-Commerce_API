@@ -8,11 +8,16 @@ export namespace CartAndCartItemRepository {
       item: CartItemEntity,
       user_id: string,
     ): Promise<CartItemEntity>;
-    removeItemFromCart(item_id: string, cart_id: string): Promise<void>;
+    removeItemFromCart(
+      item_id: string,
+      cart_id: string,
+      user_id: string,
+    ): Promise<void>;
     updateQuantity(
       cart_id: string,
       item_id: string,
       quantity: number,
+      user_id: string,
     ): Promise<CartItemEntity>;
     deleteCart(cart_id: string, user_id: string): Promise<void>;
     findCart(cart_id: string, user_id: string): Promise<CartEntity>;

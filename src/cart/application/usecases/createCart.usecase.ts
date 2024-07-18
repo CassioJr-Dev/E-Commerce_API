@@ -3,7 +3,7 @@ import { UseCase as DefaultUseCase } from '../../../shared/application/usecases/
 import { CartEntity } from '@/cart/domain/entities/cart.entity';
 import { CartOutput, CartOutputMapper } from '../dtos/cart-output';
 
-export namespace AddItemUseCase {
+export namespace CreateCartUseCase {
   export type Input = {
     user_id: string;
   };

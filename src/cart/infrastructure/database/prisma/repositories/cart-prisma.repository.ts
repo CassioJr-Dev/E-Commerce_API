@@ -31,7 +31,17 @@ export class CartPrismaRepository
     return CartItemModelMapper.toEntity(addItem);
   }
 
-  async removeItemFromCart(item_id: string, cart_id: string): Promise<void> {
+  async removeItemFromCart(
+    item_id: string,
+    cart_id: string,
+    user_id: string,
+  ): Promise<void> {
+    const cartExists = await this.cartExists(cart_id, user_id);
+
+    if (!cartExists) {
+      throw new NotFoundError('Cart not found');
+    }
+
     await this.itemExists(item_id, cart_id);
 
     await this.prismaService.cartItem.delete({
@@ -43,7 +53,13 @@ export class CartPrismaRepository
     cart_id: string,
     item_id: string,
     quantity: number,
+    user_id: string,
   ): Promise<CartItemEntity> {
+    const cartExists = await this.cartExists(cart_id, user_id);
+
+    if (!cartExists) {
+      throw new NotFoundError('Cart not found');
+    }
     const item = await this.itemExists(item_id, cart_id);
 
     const updateItem = await this.prismaService.cartItem.update({
@@ -74,7 +90,11 @@ export class CartPrismaRepository
     if (!cartExists) {
       throw new NotFoundError('Cart not found');
     }
-    const cartItems = await this.prismaService.cartItem.findMany();
+    const cartItems = await this.prismaService.cartItem.findMany({
+      where: {
+        cart_id,
+      },
+    });
 
     return cartItems.map(item => CartItemModelMapper.toEntity(item));
   }

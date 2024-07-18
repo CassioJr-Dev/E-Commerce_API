@@ -3,7 +3,7 @@ import { UseCase as DefaultUseCase } from '../../../shared/application/usecases/
 import { CartItemOutput } from '../dtos/cartItem-output';
 import { CartItemModelMapper } from '@/cart/infrastructure/database/prisma/models/cart-model.mapper';
 
-export namespace getCartUseCase {
+export namespace getItemsCartUseCase {
   export type Input = {
     cart_id: string;
     user_id: string;
