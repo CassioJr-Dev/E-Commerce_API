@@ -3,7 +3,11 @@ import { CartItemEntity } from '../entities/cartItem.entity';
 
 export namespace CartAndCartItemRepository {
   export interface Repository {
-    addItemToCart(item: CartItemEntity, user_id: string): Promise<void>;
+    createCart(cart: CartEntity): Promise<CartEntity>;
+    addItemToCart(
+      item: CartItemEntity,
+      user_id: string,
+    ): Promise<CartItemEntity>;
     removeItemFromCart(item_id: string, cart_id: string): Promise<void>;
     updateQuantity(
       cart_id: string,
