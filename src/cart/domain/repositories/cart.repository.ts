@@ -14,9 +14,7 @@ export namespace CartAndCartItemRepository {
       user_id: string,
     ): Promise<void>;
     updateQuantity(
-      cart_id: string,
-      item_id: string,
-      quantity: number,
+      itemEntity: CartItemEntity,
       user_id: string,
     ): Promise<CartItemEntity>;
     deleteCart(cart_id: string, user_id: string): Promise<void>;

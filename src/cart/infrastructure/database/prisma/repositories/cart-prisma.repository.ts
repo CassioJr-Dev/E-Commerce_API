@@ -58,9 +58,7 @@ export class CartPrismaRepository
   }
 
   async updateQuantity(
-    cart_id: string,
-    item_id: string,
-    quantity: number,
+    itemEntity: CartItemEntity,
     user_id: string,
   ): Promise<CartItemEntity> {
     const cartExists = await this.cartExists(user_id);
@@ -68,14 +66,11 @@ export class CartPrismaRepository
     if (!cartExists) {
       throw new NotFoundError('Cart not found');
     }
-    const item = await this.itemExists(item_id, cart_id);
+    const item = await this.itemExists(itemEntity._id, itemEntity.cart_id);
 
     const updateItem = await this.prismaService.cartItem.update({
       where: { id: item.id, cart_id: item.cart_id },
-      data: {
-        ...item.toJSON(),
-        quantity,
-      },
+      data: itemEntity,
     });
 
     return CartItemModelMapper.toEntity(updateItem);

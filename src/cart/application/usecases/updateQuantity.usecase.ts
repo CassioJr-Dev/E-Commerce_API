@@ -1,9 +1,10 @@
 import { CartAndCartItemRepository } from '@/cart/domain/repositories/cart.repository';
 import { UseCase as DefaultUseCase } from '../../../shared/application/usecases/use-case';
-import { CartItemOutput } from '../dtos/cartItem-output';
+import { CartItemOutput, CartItemOutputMapper } from '../dtos/cartItem-output';
 import { CartItemModelMapper } from '@/cart/infrastructure/database/prisma/models/cart-model.mapper';
+import { CartItemEntity } from '@/cart/domain/entities/cartItem.entity';
 
-export namespace updateQuantityUseCase {
+export namespace UpdateQuantityUseCase {
   export type Input = {
     cart_id: string;
     item_id: string;
@@ -17,16 +18,28 @@ export namespace updateQuantityUseCase {
     constructor(private cartRepository: CartAndCartItemRepository.Repository) {}
 
     async execute(input: Input): Promise<Output> {
-      const { cart_id, item_id, quantity, user_id } = input;
+      const { id, cart_id, product_id, quantity, created_at, updated_at } =
+        await this.cartRepository.itemExists(input.item_id, input.cart_id);
 
-      const update = await this.cartRepository.updateQuantity(
-        cart_id,
-        item_id,
-        quantity,
-        user_id,
+      const updateItem = new CartItemEntity(
+        {
+          cart_id: cart_id,
+          product_id: product_id,
+          quantity: quantity,
+        },
+        id,
+        created_at,
+        updated_at,
       );
 
-      return CartItemModelMapper.toEntity(update);
+      updateItem.updateQuantity(input.quantity);
+
+      const update = await this.cartRepository.updateQuantity(
+        updateItem,
+        input.user_id,
+      );
+
+      return CartItemOutputMapper.toOutput(update);
     }
   }
 }
