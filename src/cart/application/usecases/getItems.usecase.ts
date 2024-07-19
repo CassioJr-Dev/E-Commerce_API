@@ -1,9 +1,8 @@
 import { CartAndCartItemRepository } from '@/cart/domain/repositories/cart.repository';
 import { UseCase as DefaultUseCase } from '../../../shared/application/usecases/use-case';
-import { CartItemOutput } from '../dtos/cartItem-output';
-import { CartItemModelMapper } from '@/cart/infrastructure/database/prisma/models/cart-model.mapper';
+import { CartItemOutput, CartItemOutputMapper } from '../dtos/cartItem-output';
 
-export namespace getItemsCartUseCase {
+export namespace GetItemsCartUseCase {
   export type Input = {
     cart_id: string;
     user_id: string;
@@ -19,7 +18,7 @@ export namespace getItemsCartUseCase {
 
       const findItems = await this.cartRepository.findAll(cart_id, user_id);
 
-      return findItems.map(item => CartItemModelMapper.toEntity(item));
+      return findItems.map(item => CartItemOutputMapper.toOutput(item));
     }
   }
 }
