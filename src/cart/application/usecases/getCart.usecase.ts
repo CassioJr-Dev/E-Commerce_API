@@ -2,7 +2,7 @@ import { CartAndCartItemRepository } from '@/cart/domain/repositories/cart.repos
 import { UseCase as DefaultUseCase } from '../../../shared/application/usecases/use-case';
 import { CartOutput, CartOutputMapper } from '../dtos/cart-output';
 
-export namespace getCartUseCase {
+export namespace GetCartUseCase {
   export type Input = {
     cart_id: string;
     user_id: string;
