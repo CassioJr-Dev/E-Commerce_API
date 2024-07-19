@@ -24,6 +24,14 @@ export class CartPrismaRepository
       throw new NotFoundError('Cart not found');
     }
 
+    const itemExists = await this.prismaService.cartItem.findMany({
+      where: { product_id: item.product_id, cart_id: item.cart_id },
+    });
+
+    if (itemExists.length) {
+      throw new ConflictError('The product already exists in the cart');
+    }
+
     const addItem = await this.prismaService.cartItem.create({
       data: item.toJSON(),
     });

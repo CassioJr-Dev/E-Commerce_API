@@ -39,6 +39,7 @@ describe('CreateCartUseCase integration tests', () => {
   afterAll(async () => {
     await prismaService.cart.deleteMany();
     await prismaService.cartItem.deleteMany();
+    await prismaService.user.deleteMany();
 
     module.close;
   });
