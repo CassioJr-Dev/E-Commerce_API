@@ -1,7 +1,6 @@
 import { CartAndCartItemRepository } from '@/cart/domain/repositories/cart.repository';
 import { UseCase as DefaultUseCase } from '../../../shared/application/usecases/use-case';
 import { CartItemOutput, CartItemOutputMapper } from '../dtos/cartItem-output';
-import { CartItemModelMapper } from '@/cart/infrastructure/database/prisma/models/cart-model.mapper';
 import { CartItemEntity } from '@/cart/domain/entities/cartItem.entity';
 
 export namespace UpdateQuantityUseCase {
