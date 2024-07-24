@@ -11,9 +11,9 @@ import { AuthService } from '@/auth/infrastructure/auth.service';
 import { AuthModule } from '@/auth/infrastructure/auth.module';
 import { CartController } from '../../cart.controller';
 import { instanceToPlain } from 'class-transformer';
-import request from 'supertest';
 import { UserEntity } from '@/users/domain/entities/user.entity';
 import { UserDataBuilder } from '@/users/domain/testing/helpers/user-data-builder';
+import request from 'supertest';
 
 describe('CartController e2e tests', () => {
   let app: INestApplication;
@@ -77,6 +77,13 @@ describe('CartController e2e tests', () => {
       const serialized = instanceToPlain(presenter);
 
       expect(res.body.data.cart).toStrictEqual(serialized);
+    });
+
+    it('Should return a error with 422 code when Authorization header not provided', async () => {
+      const res = await request(app.getHttpServer())
+        .post('/cart/createCart')
+        .expect(401);
+      expect(res.body.message).toEqual('Unauthorized');
     });
   });
 });
