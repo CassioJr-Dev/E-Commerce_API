@@ -20,6 +20,16 @@ export class CartPrismaRepository
   ): Promise<CartItemEntity> {
     const cartExists = await this.cartExists(user_id);
 
+    const productExists = await this.prismaService.product.findUnique({
+      where: {
+        id: item.product_id,
+      },
+    });
+
+    if (!productExists) {
+      throw new NotFoundError('Product not found');
+    }
+
     if (!cartExists) {
       throw new NotFoundError('Cart not found');
     }
@@ -32,9 +42,15 @@ export class CartPrismaRepository
       throw new ConflictError('The product already exists in the cart');
     }
 
-    const addItem = await this.prismaService.cartItem.create({
-      data: item.toJSON(),
-    });
+    let addItem;
+
+    try {
+      addItem = await this.prismaService.cartItem.create({
+        data: item.toJSON(),
+      });
+    } catch (error) {
+      console.log(error);
+    }
 
     return CartItemModelMapper.toEntity(addItem);
   }

@@ -107,6 +107,18 @@ describe('CartPrismaRepository integration tests', () => {
     expect(result).toStrictEqual(cartItem.toJSON());
   });
 
+  it('Should throws error when product not found', async () => {
+    const newItem = new CartItemEntity({
+      cart_id: cartItem.id,
+      product_id: 'FakeId',
+      quantity: 5,
+    });
+
+    await expect(() =>
+      sut.addItemToCart(newItem, userProps.id),
+    ).rejects.toThrow(new NotFoundError('Product not found'));
+  });
+
   it('Should returns all cartItems', async () => {
     await sut.createCart(cart);
     await sut.addItemToCart(cartItem, cart.user_id);
@@ -121,11 +133,8 @@ describe('CartPrismaRepository integration tests', () => {
 
   it('Should throws error on update when a entity not found', async () => {
     await sut.createCart(cart);
-    await sut.addItemToCart(cartItem, cart.user_id);
-    const entity = new UserEntity(UserDataBuilder({}));
-
     await expect(() =>
-      sut.updateQuantity(cart._id, 'fakeId', 5, userProps.id),
+      sut.updateQuantity(cartItem, cart.user_id),
     ).rejects.toThrow(new NotFoundError('Item not found'));
   });
 
@@ -134,12 +143,7 @@ describe('CartPrismaRepository integration tests', () => {
     await sut.addItemToCart(cartItem, cart.user_id);
 
     cartItem.updateQuantity(20);
-    await sut.updateQuantity(
-      cart.id,
-      cartItem.id,
-      cartItem.quantity,
-      userProps.id,
-    );
+    await sut.updateQuantity(cartItem, cart.user_id);
 
     const output = await prismaService.cartItem.findUnique({
       where: {
