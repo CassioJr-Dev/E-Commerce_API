@@ -32,6 +32,8 @@ export class WrapperDataInterceptor implements NestInterceptor {
 
         const keysUser = ['id', 'name', 'isSeller', 'email'];
         const keysProduct = ['id', 'name', 'description', 'price', 'stock'];
+        const keysCart = ['id', 'user_id'];
+        const keysCartItem = ['id', 'cart_id', 'product_id', 'quantity'];
 
         const hasKeys = (keys: Array<String>) =>
           keys.every(key => body.hasOwnProperty(key));
@@ -41,6 +43,12 @@ export class WrapperDataInterceptor implements NestInterceptor {
         }
         if (hasKeys(keysProduct)) {
           entity = { product: copyBody };
+        }
+        if (hasKeys(keysCart)) {
+          entity = { cart: copyBody };
+        }
+        if (hasKeys(keysCartItem)) {
+          entity = { cartItem: copyBody };
         }
 
         return !body || 'meta' in body ? body : { data: entity };

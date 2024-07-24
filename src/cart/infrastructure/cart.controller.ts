@@ -71,7 +71,6 @@ export class CartController {
     const createCart = await this.createCartUseCase.execute({
       user_id: extractUserId,
     });
-
     return CartController.cartToResponse(createCart);
   }
 
