@@ -8,8 +8,9 @@ import {
   Delete,
   Inject,
   Headers,
+  UseGuards,
 } from '@nestjs/common';
-import { CreateCartDto } from './dtos/addItem-cart.dto';
+import { AddItemToCartDto } from './dtos/addItem-cart.dto';
 import { UpdateCartItemDto } from './dtos/update-cart.dto';
 import { AddItemUseCase } from '../application/usecases/addItem.usecase';
 import { AuthService } from '@/auth/infrastructure/auth.service';
@@ -26,6 +27,7 @@ import {
 import { CartItemOutput } from '../application/dtos/cartItem-output';
 import { CartOutput } from '../application/dtos/cart-output';
 import { CartPresenter } from './presenter/cart.presenter';
+import { AuthGuard } from '@/auth/infrastructure/auth.guard';
 
 @Controller('cart')
 export class CartController {
@@ -65,6 +67,7 @@ export class CartController {
     return new CartPresenter(output);
   }
 
+  @UseGuards(AuthGuard)
   @Post('createCart')
   async createCart(@Headers('Authorization') authorization: string) {
     const extractUserId = await this.authService.extractPayload(authorization);
@@ -74,9 +77,10 @@ export class CartController {
     return CartController.cartToResponse(createCart);
   }
 
+  @UseGuards(AuthGuard)
   @Post()
   async addItem(
-    @Body() createCartDto: CreateCartDto,
+    @Body() createCartDto: AddItemToCartDto,
     @Headers('Authorization') authorization: string,
   ) {
     const extractUserId = await this.authService.extractPayload(authorization);
@@ -88,6 +92,7 @@ export class CartController {
     return CartController.cartItemToResponse(insertItem);
   }
 
+  @UseGuards(AuthGuard)
   @Get('items/:id')
   async findAll(
     @Param('id') cart_id: string,
@@ -102,6 +107,7 @@ export class CartController {
     return CartController.listCartItemsToResponse(findItems);
   }
 
+  @UseGuards(AuthGuard)
   @Get(':id')
   async findCart(
     @Param('id') cart_id: string,
@@ -116,6 +122,7 @@ export class CartController {
     return CartController.cartToResponse(findCart);
   }
 
+  @UseGuards(AuthGuard)
   @Patch(':id')
   async updateQuantity(
     @Param('id') cart_id: string,
@@ -132,6 +139,7 @@ export class CartController {
     return CartController.cartItemToResponse(update);
   }
 
+  @UseGuards(AuthGuard)
   @Delete(':id')
   async removeCart(
     @Param('id') cart_id: string,
@@ -141,6 +149,7 @@ export class CartController {
     await this.deleteCartUseCase.execute({ cart_id, user_id: extractUserId });
   }
 
+  @UseGuards(AuthGuard)
   @Delete(':id/item/itemId')
   async removeItem(
     @Param('itemId') item_id: string,
