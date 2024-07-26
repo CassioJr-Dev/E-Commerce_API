@@ -19,7 +19,7 @@ export namespace CartAndCartItemRepository {
     ): Promise<CartItemEntity>;
     deleteCart(cart_id: string, user_id: string): Promise<void>;
     findCart(cart_id: string, user_id: string): Promise<CartEntity>;
-    cartExists(user_id: string): Promise<boolean>;
+    cartExists(user_id: string, cart_id: string): Promise<boolean>;
     itemExists(item_id: string, cart_id: string): Promise<CartItemEntity>;
     findAll(cart_id: string, user_id: string): Promise<CartItemEntity[]>;
   }
