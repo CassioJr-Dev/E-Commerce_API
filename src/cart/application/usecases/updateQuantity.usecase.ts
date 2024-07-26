@@ -17,12 +17,12 @@ export namespace UpdateQuantityUseCase {
     constructor(private cartRepository: CartAndCartItemRepository.Repository) {}
 
     async execute(input: Input): Promise<Output> {
-      const { id, cart_id, product_id, quantity, created_at, updated_at } =
+      const { id, product_id, quantity, created_at, updated_at } =
         await this.cartRepository.itemExists(input.item_id, input.cart_id);
 
       const updateItem = new CartItemEntity(
         {
-          cart_id: cart_id,
+          cart_id: input.cart_id,
           product_id: product_id,
           quantity: quantity,
         },
@@ -37,7 +37,7 @@ export namespace UpdateQuantityUseCase {
         updateItem,
         input.user_id,
       );
-
+      console.log(input.cart_id);
       return CartItemOutputMapper.toOutput(update);
     }
   }

@@ -96,5 +96,15 @@ describe('CartController e2e tests', () => {
         data: { cart: instanceToPlain(entitie) },
       });
     });
+
+    it('Should return a error with 401 code when the request is not authorized', async () => {
+      const res = await request(app.getHttpServer())
+        .patch(`/cart/${cart.id}`)
+        .expect(401)
+        .expect({
+          statusCode: 401,
+          message: 'Unauthorized',
+        });
+    });
   });
 });

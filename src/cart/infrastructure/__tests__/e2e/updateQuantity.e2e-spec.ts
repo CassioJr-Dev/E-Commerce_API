@@ -15,9 +15,9 @@ import { CartEntity } from '@/cart/domain/entities/cart.entity';
 import { ProductEntity } from '@/products/domain/entities/product.entity';
 import { ProductDataBuilder } from '@/products/domain/testing/helpers/product-data-builder';
 import { CartItemEntity } from '@/cart/domain/entities/cartItem.entity';
-import { instanceToPlain } from 'class-transformer';
 import { CartItemPresenter } from '../../presenter/cartItem.presenter';
 import { CartItemOutputMapper } from '@/cart/application/dtos/cartItem-output';
+import { UpdateCartItemDto } from '../../dtos/update-cart.dto';
 import request from 'supertest';
 
 describe('CartController e2e tests', () => {
@@ -31,6 +31,7 @@ describe('CartController e2e tests', () => {
   let cart: CartEntity;
   let cartItem: CartItemEntity;
   let product: ProductEntity;
+  let updateCartItemDto: UpdateCartItemDto;
   const prismaService = new PrismaClient();
 
   beforeAll(async () => {
@@ -85,6 +86,11 @@ describe('CartController e2e tests', () => {
     await prismaService.cartItem.create({ data: cartItem });
 
     accessToken = `Bearer ${(await authService.generateJwt(user_id)).accessToken}`;
+
+    updateCartItemDto = {
+      item_id: cartItem.id,
+      quantity: 10,
+    };
   });
 
   afterAll(async () => {
@@ -93,33 +99,83 @@ describe('CartController e2e tests', () => {
     await prismaService.cartItem.deleteMany();
   });
 
-  describe('GET /cart/items/:id', () => {
-    it('Should return the item to cart', async () => {
+  describe('PATCH /cart/:id', () => {
+    it('Should update the quantity', async () => {
       const entitie = new CartItemPresenter(
         CartItemOutputMapper.toOutput(cartItem),
       );
+
+      entitie.quantity = 10;
+
       const res = await request(app.getHttpServer())
-        .get(`/cart/items/${cart.id}`)
+        .patch(`/cart/${cart.id}`)
         .set('Authorization', `${accessToken}`)
+        .send(updateCartItemDto)
         .expect(200);
+
+      entitie.updated_at = res.body.data.cartItem.updated_at;
+
       expect(Object.keys(res.body)).toStrictEqual(['data']);
-      expect(res.body).toStrictEqual({
-        data: [instanceToPlain(entitie)],
-      });
+      expect(Object.keys(res.body.data)).toStrictEqual(['cartItem']);
+      expect(res.body.data.cartItem.quantity).toEqual(10);
+    });
+
+    it('Should return a error with 422 code when the request body is invalid', async () => {
+      const res = await request(app.getHttpServer())
+        .patch(`/cart/${cart.id}`)
+        .set('Authorization', `${accessToken}`)
+        .send({})
+        .expect(422);
+      expect(res.body.error).toBe('Unprocessable Entity');
+      expect(res.body.message).toEqual([
+        'item_id should not be empty',
+        'item_id must be a string',
+        'quantity should not be empty',
+        'quantity must be a number conforming to the specified constraints',
+      ]);
     });
 
     it('Should return a error with 404 code when throw NotFoundError with invalid id', async () => {
       const res = await request(app.getHttpServer())
-        .get('/cart/items/fakeId')
+        .patch('/cart/fakeId')
         .set('Authorization', `${accessToken}`)
+        .send(updateCartItemDto)
         .expect(404);
       expect(res.body.error).toBe('Not Found');
-      expect(res.body.message).toBe('Cart not found');
+      expect(res.body.message).toEqual('Item not found');
+    });
+
+    it('Should return a error with 422 code when the item_id field is invalid', async () => {
+      delete updateCartItemDto.item_id;
+      const res = await request(app.getHttpServer())
+        .patch(`/cart/${cart.id}`)
+        .set('Authorization', `${accessToken}`)
+        .send(updateCartItemDto)
+        .expect(422);
+      expect(res.body.error).toBe('Unprocessable Entity');
+      expect(res.body.message).toEqual([
+        'item_id should not be empty',
+        'item_id must be a string',
+      ]);
+    });
+
+    it('Should return a error with 422 code when the quantity field is invalid', async () => {
+      delete updateCartItemDto.quantity;
+      const res = await request(app.getHttpServer())
+        .patch(`/cart/${cart.id}`)
+        .set('Authorization', `${accessToken}`)
+        .send(updateCartItemDto)
+        .expect(422);
+      expect(res.body.error).toBe('Unprocessable Entity');
+      expect(res.body.message).toEqual([
+        'quantity should not be empty',
+        'quantity must be a number conforming to the specified constraints',
+      ]);
     });
 
     it('Should return a error with 401 code when the request is not authorized', async () => {
       const res = await request(app.getHttpServer())
-        .get(`/cart/items/${cart.id}`)
+        .patch(`/cart/${cart.id}`)
         .expect(401)
         .expect({
           statusCode: 401,
