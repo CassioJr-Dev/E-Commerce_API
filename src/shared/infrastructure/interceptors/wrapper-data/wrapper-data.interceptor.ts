@@ -35,6 +35,15 @@ export class WrapperDataInterceptor implements NestInterceptor {
         const keysCart = ['id', 'user_id'];
         const keysCartItem = ['id', 'cart_id', 'product_id', 'quantity'];
 
+        if (Array.isArray(body.data)) {
+          const hasKeys = (keys: Array<String>) =>
+            keys.every(key => body.data[0].hasOwnProperty(key));
+
+          if (hasKeys(keysCartItem)) {
+            return body;
+          }
+        }
+
         const hasKeys = (keys: Array<String>) =>
           keys.every(key => body.hasOwnProperty(key));
 
