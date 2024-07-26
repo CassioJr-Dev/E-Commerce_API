@@ -153,7 +153,7 @@ export class CartController {
 
   @UseGuards(AuthGuard)
   @HttpCode(204)
-  @Delete(':id/item/itemId')
+  @Delete(':id/item/:itemId')
   async removeItem(
     @Param('itemId') item_id: string,
     @Param('id') cart_id: string,

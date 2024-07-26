@@ -91,18 +91,30 @@ describe('CartController e2e tests', () => {
     await prismaService.cartItem.deleteMany();
   });
 
-  describe('DELETE /cart/:id', () => {
+  describe('DELETE /cart/:id/item/:id', () => {
     it('Should remove a cart', async () => {
       const res = await request(app.getHttpServer())
-        .delete(`/cart/${cart._id}`)
+        .delete(`/cart/${cart.id}/item/${cartItem.id}`)
         .set('Authorization', `${accessToken}`)
         .expect(204)
         .expect({});
     });
 
+    it('Should return a error with 404 code when throw NotFoundError with invalid ItemId', async () => {
+      const res = await request(app.getHttpServer())
+        .delete(`/cart/${cart.id}/item/fakeId`)
+        .set('Authorization', `${accessToken}`)
+        .expect(404)
+        .expect({
+          statusCode: 404,
+          error: 'Not Found',
+          message: 'Item not found',
+        });
+    });
+
     it('Should return a error with 404 code when throw NotFoundError with invalid id', async () => {
       const res = await request(app.getHttpServer())
-        .delete('/cart/fakeId')
+        .delete(`/cart/fakeId/item/${cartItem.id}`)
         .set('Authorization', `${accessToken}`)
         .expect(404)
         .expect({
@@ -114,7 +126,7 @@ describe('CartController e2e tests', () => {
 
     it('Should return a error with 401 code when the request is not authorized', async () => {
       const res = await request(app.getHttpServer())
-        .delete('/cart/fakeId')
+        .delete(`/cart/${cart.id}/item/${cartItem.id}`)
         .expect(401)
         .expect({
           statusCode: 401,
