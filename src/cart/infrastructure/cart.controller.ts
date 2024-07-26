@@ -9,6 +9,7 @@ import {
   Inject,
   Headers,
   UseGuards,
+  HttpCode,
 } from '@nestjs/common';
 import { AddItemToCartDto } from './dtos/addItem-cart.dto';
 import { UpdateCartItemDto } from './dtos/update-cart.dto';
@@ -140,6 +141,7 @@ export class CartController {
   }
 
   @UseGuards(AuthGuard)
+  @HttpCode(204)
   @Delete(':id')
   async removeCart(
     @Param('id') cart_id: string,
@@ -150,6 +152,7 @@ export class CartController {
   }
 
   @UseGuards(AuthGuard)
+  @HttpCode(204)
   @Delete(':id/item/itemId')
   async removeItem(
     @Param('itemId') item_id: string,
