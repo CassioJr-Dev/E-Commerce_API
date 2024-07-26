@@ -14,10 +14,9 @@ import { UserDataBuilder } from '@/users/domain/testing/helpers/user-data-builde
 import { CartEntity } from '@/cart/domain/entities/cart.entity';
 import { ProductEntity } from '@/products/domain/entities/product.entity';
 import { ProductDataBuilder } from '@/products/domain/testing/helpers/product-data-builder';
-import { CartItemEntity } from '@/cart/domain/entities/cartItem.entity';
 import { instanceToPlain } from 'class-transformer';
-import { CartItemPresenter } from '../../presenter/cartItem.presenter';
-import { CartItemOutputMapper } from '@/cart/application/dtos/cartItem-output';
+import { CartPresenter } from '../../presenter/cart.presenter';
+import { CartOutputMapper } from '@/cart/application/dtos/cart-output';
 import request from 'supertest';
 
 describe('CartController e2e tests', () => {
@@ -29,7 +28,6 @@ describe('CartController e2e tests', () => {
   let authService: AuthService;
   let user: UserEntity;
   let cart: CartEntity;
-  let cartItem: CartItemEntity;
   let product: ProductEntity;
   const prismaService = new PrismaClient();
 
@@ -77,13 +75,6 @@ describe('CartController e2e tests', () => {
     });
     await prismaService.product.create({ data: product });
 
-    cartItem = new CartItemEntity({
-      cart_id: cart.id,
-      product_id: product.id,
-      quantity: 5,
-    });
-    await prismaService.cartItem.create({ data: cartItem });
-
     accessToken = `Bearer ${(await authService.generateJwt(user_id)).accessToken}`;
   });
 
@@ -93,18 +84,16 @@ describe('CartController e2e tests', () => {
     await prismaService.cartItem.deleteMany();
   });
 
-  describe('GET /cart/items/:id', () => {
-    it('Should return the item to cart', async () => {
-      const entitie = new CartItemPresenter(
-        CartItemOutputMapper.toOutput(cartItem),
-      );
+  describe('GET /cart/:id', () => {
+    it('Should return the cart', async () => {
+      const entitie = new CartPresenter(CartOutputMapper.toOutput(cart));
       const res = await request(app.getHttpServer())
-        .get(`/cart/items/${cart.id}`)
+        .get(`/cart/${cart.id}`)
         .set('Authorization', `${accessToken}`)
         .expect(200);
       expect(Object.keys(res.body)).toStrictEqual(['data']);
       expect(res.body).toStrictEqual({
-        data: [instanceToPlain(entitie)],
+        data: { cart: instanceToPlain(entitie) },
       });
     });
   });
