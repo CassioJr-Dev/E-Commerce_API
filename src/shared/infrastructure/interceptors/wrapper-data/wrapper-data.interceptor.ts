@@ -40,7 +40,11 @@ export class WrapperDataInterceptor implements NestInterceptor {
             keys.every(key => body.data[0].hasOwnProperty(key));
 
           if (hasKeys(keysCartItem)) {
-            return body;
+            return {
+              data: {
+                items: body.data,
+              },
+            };
           }
         }
 
@@ -49,14 +53,11 @@ export class WrapperDataInterceptor implements NestInterceptor {
 
         if (hasKeys(keysUser)) {
           entity = { user: copyBody, accessToken: body?.accessToken };
-        }
-        if (hasKeys(keysProduct)) {
+        } else if (hasKeys(keysProduct)) {
           entity = { product: copyBody };
-        }
-        if (hasKeys(keysCart)) {
+        } else if (hasKeys(keysCart)) {
           entity = { cart: copyBody };
-        }
-        if (hasKeys(keysCartItem)) {
+        } else if (hasKeys(keysCartItem)) {
           entity = { cartItem: copyBody };
         }
 
