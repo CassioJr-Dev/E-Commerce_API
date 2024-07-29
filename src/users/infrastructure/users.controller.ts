@@ -81,12 +81,20 @@ export class UsersController {
         data: {
           type: 'object',
           properties: {
-            id: { type: 'string', format: 'uuid' },
-            name: { type: 'string' },
-            isSeller: { type: 'boolean' },
-            email: { type: 'string', format: 'email' },
-            created_at: { type: 'string', format: 'date-time' },
-            updated_at: { type: 'string', format: 'date-time' },
+            user: {
+              type: 'object',
+              properties: {
+                id: { type: 'string', format: 'uuid' },
+                name: { type: 'string' },
+                isSeller: { type: 'boolean' },
+                email: { type: 'string', format: 'email' },
+                created_at: { type: 'string', format: 'date-time' },
+                updated_at: { type: 'string', format: 'date-time' },
+              },
+            },
+            accessToken: {
+              type: 'string',
+            },
           },
         },
       },
@@ -117,8 +125,24 @@ export class UsersController {
     schema: {
       type: 'object',
       properties: {
-        accessToken: {
-          type: 'string',
+        data: {
+          type: 'object',
+          properties: {
+            user: {
+              type: 'object',
+              properties: {
+                id: { type: 'string', format: 'uuid' },
+                name: { type: 'string' },
+                isSeller: { type: 'boolean' },
+                email: { type: 'string', format: 'email' },
+                created_at: { type: 'string', format: 'date-time' },
+                updated_at: { type: 'string', format: 'date-time' },
+              },
+            },
+            accessToken: {
+              type: 'string',
+            },
+          },
         },
       },
     },
@@ -201,12 +225,17 @@ export class UsersController {
         data: {
           type: 'object',
           properties: {
-            id: { type: 'string', format: 'uuid' },
-            name: { type: 'string' },
-            isSeller: { type: 'boolean' },
-            email: { type: 'string', format: 'email' },
-            created_at: { type: 'string', format: 'date-time' },
-            updated_at: { type: 'string', format: 'date-time' },
+            user: {
+              type: 'object',
+              properties: {
+                id: { type: 'string', format: 'uuid' },
+                name: { type: 'string' },
+                isSeller: { type: 'boolean' },
+                email: { type: 'string', format: 'email' },
+                created_at: { type: 'string', format: 'date-time' },
+                updated_at: { type: 'string', format: 'date-time' },
+              },
+            },
           },
         },
       },
@@ -278,12 +307,17 @@ export class UsersController {
         data: {
           type: 'object',
           properties: {
-            id: { type: 'string', format: 'uuid' },
-            name: { type: 'string' },
-            isSeller: { type: 'boolean' },
-            email: { type: 'string', format: 'email' },
-            created_at: { type: 'string', format: 'date-time' },
-            updated_at: { type: 'string', format: 'date-time' },
+            user: {
+              type: 'object',
+              properties: {
+                id: { type: 'string', format: 'uuid' },
+                name: { type: 'string' },
+                isSeller: { type: 'boolean' },
+                email: { type: 'string', format: 'email' },
+                created_at: { type: 'string', format: 'date-time' },
+                updated_at: { type: 'string', format: 'date-time' },
+              },
+            },
           },
         },
       },
