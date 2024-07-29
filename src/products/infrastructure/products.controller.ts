@@ -72,12 +72,18 @@ export class ProductsController {
         data: {
           type: 'object',
           properties: {
-            id: { type: 'string', format: 'uuid' },
-            name: { type: 'string' },
-            isSeller: { type: 'boolean' },
-            email: { type: 'string', format: 'email' },
-            created_at: { type: 'string', format: 'date-time' },
-            updated_at: { type: 'string', format: 'date-time' },
+            product: {
+              type: 'object',
+              properties: {
+                id: { type: 'string', format: 'uuid' },
+                name: { type: 'string' },
+                price: { type: 'number' },
+                stock: { type: 'number' },
+                user_id: { type: 'string', format: 'uuid' },
+                created_at: { type: 'string', format: 'date-time' },
+                updated_at: { type: 'string', format: 'date-time' },
+              },
+            },
           },
         },
       },
@@ -86,6 +92,10 @@ export class ProductsController {
   @ApiResponse({
     status: 403,
     description: 'Usuário não é vendedor',
+  })
+  @ApiResponse({
+    status: 422,
+    description: 'Corpo da requisição com dados inválidos',
   })
   @UseGuards(AuthGuard)
   @Post()
@@ -148,13 +158,18 @@ export class ProductsController {
         data: {
           type: 'object',
           properties: {
-            id: { type: 'string', format: 'uuid' },
-            name: { type: 'string' },
-            price: { type: 'number' },
-            stock: { type: 'number' },
-            user_id: { type: 'string', format: 'uuid' },
-            created_at: { type: 'string', format: 'date-time' },
-            updated_at: { type: 'string', format: 'date-time' },
+            product: {
+              type: 'object',
+              properties: {
+                id: { type: 'string', format: 'uuid' },
+                name: { type: 'string' },
+                price: { type: 'number' },
+                stock: { type: 'number' },
+                user_id: { type: 'string', format: 'uuid' },
+                created_at: { type: 'string', format: 'date-time' },
+                updated_at: { type: 'string', format: 'date-time' },
+              },
+            },
           },
         },
       },
@@ -179,13 +194,18 @@ export class ProductsController {
         data: {
           type: 'object',
           properties: {
-            id: { type: 'string', format: 'uuid' },
-            name: { type: 'string' },
-            price: { type: 'number' },
-            stock: { type: 'number' },
-            user_id: { type: 'string', format: 'uuid' },
-            created_at: { type: 'string', format: 'date-time' },
-            updated_at: { type: 'string', format: 'date-time' },
+            product: {
+              type: 'object',
+              properties: {
+                id: { type: 'string', format: 'uuid' },
+                name: { type: 'string' },
+                price: { type: 'number' },
+                stock: { type: 'number' },
+                user_id: { type: 'string', format: 'uuid' },
+                created_at: { type: 'string', format: 'date-time' },
+                updated_at: { type: 'string', format: 'date-time' },
+              },
+            },
           },
         },
       },
