@@ -8,10 +8,12 @@ describe('WrapperDataInterceptpr', () => {
   beforeEach(() => {
     interceptor = new WrapperDataInterceptor();
     props = {
+      id: 'fakeId',
       name: 'Test Name',
       isSeller: false,
       email: 'a@a.com',
       password: 'fake',
+      accessToken: 'tokenFake',
     };
   });
   it('Should be defined', () => {
@@ -19,13 +21,14 @@ describe('WrapperDataInterceptpr', () => {
   });
 
   it('Should wrapper with data key', () => {
+    const { accessToken, ...rest } = props;
     const obs$ = interceptor.intercept({} as any, {
       handle: () => of(props),
     });
 
     obs$.subscribe({
       next: value => {
-        expect(value).toEqual({ data: props });
+        expect(value).toStrictEqual({ data: { user: rest, accessToken } });
       },
     });
   });
