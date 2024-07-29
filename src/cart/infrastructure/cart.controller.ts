@@ -29,7 +29,14 @@ import { CartItemOutput } from '../application/dtos/cartItem-output';
 import { CartOutput } from '../application/dtos/cart-output';
 import { CartPresenter } from './presenter/cart.presenter';
 import { AuthGuard } from '@/auth/infrastructure/auth.guard';
+import {
+  ApiBearerAuth,
+  ApiResponse,
+  ApiTags,
+  getSchemaPath,
+} from '@nestjs/swagger';
 
+@ApiTags('cart')
 @Controller('cart')
 export class CartController {
   @Inject(CreateCartUseCase.UseCase)
@@ -68,6 +75,37 @@ export class CartController {
     return new CartPresenter(output);
   }
 
+  @ApiBearerAuth()
+  @ApiResponse({
+    status: 201,
+    schema: {
+      type: 'object',
+      properties: {
+        data: {
+          type: 'object',
+          properties: {
+            cart: {
+              type: 'object',
+              properties: {
+                id: { type: 'string', format: 'uuid' },
+                user_id: { type: 'string', format: 'uuid' },
+                created_at: { type: 'string', format: 'date-time' },
+                updated_at: { type: 'string', format: 'date-time' },
+              },
+            },
+          },
+        },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 422,
+    description: 'Corpo da requisição com dados inválidos',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Id não encontrado',
+  })
   @UseGuards(AuthGuard)
   @Post('createCart')
   async createCart(@Headers('Authorization') authorization: string) {
@@ -78,6 +116,39 @@ export class CartController {
     return CartController.cartToResponse(createCart);
   }
 
+  @ApiBearerAuth()
+  @ApiResponse({
+    status: 201,
+    schema: {
+      type: 'object',
+      properties: {
+        data: {
+          type: 'object',
+          properties: {
+            cart: {
+              type: 'object',
+              properties: {
+                id: { type: 'string', format: 'uuid' },
+                cart_id: { type: 'string', format: 'uuid' },
+                product_id: { type: 'string', format: 'uuid' },
+                quantity: { type: 'number' },
+                created_at: { type: 'string', format: 'date-time' },
+                updated_at: { type: 'string', format: 'date-time' },
+              },
+            },
+          },
+        },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 422,
+    description: 'Corpo da requisição com dados inválidos',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Id não encontrado',
+  })
   @UseGuards(AuthGuard)
   @Post()
   async addItem(
@@ -93,6 +164,23 @@ export class CartController {
     return CartController.cartItemToResponse(insertItem);
   }
 
+  @ApiBearerAuth()
+  @ApiResponse({
+    status: 200,
+    schema: {
+      type: 'object',
+      properties: {
+        data: {
+          type: 'array',
+          items: { $ref: getSchemaPath(CartItemPresenter) },
+        },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Id não encontrado',
+  })
   @UseGuards(AuthGuard)
   @Get('items/:id')
   async findAll(
@@ -108,6 +196,33 @@ export class CartController {
     return CartController.listCartItemsToResponse(findItems);
   }
 
+  @ApiBearerAuth()
+  @ApiResponse({
+    status: 200,
+    schema: {
+      type: 'object',
+      properties: {
+        data: {
+          type: 'object',
+          properties: {
+            cart: {
+              type: 'object',
+              properties: {
+                id: { type: 'string', format: 'uuid' },
+                user_id: { type: 'string', format: 'uuid' },
+                created_at: { type: 'string', format: 'date-time' },
+                updated_at: { type: 'string', format: 'date-time' },
+              },
+            },
+          },
+        },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Id não encontrado',
+  })
   @UseGuards(AuthGuard)
   @Get(':id')
   async findCart(
@@ -123,6 +238,35 @@ export class CartController {
     return CartController.cartToResponse(findCart);
   }
 
+  @ApiBearerAuth()
+  @ApiResponse({
+    status: 200,
+    schema: {
+      type: 'object',
+      properties: {
+        data: {
+          type: 'object',
+          properties: {
+            cart: {
+              type: 'object',
+              properties: {
+                id: { type: 'string', format: 'uuid' },
+                cart_id: { type: 'string', format: 'uuid' },
+                product_id: { type: 'string', format: 'uuid' },
+                quantity: { type: 'number' },
+                created_at: { type: 'string', format: 'date-time' },
+                updated_at: { type: 'string', format: 'date-time' },
+              },
+            },
+          },
+        },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 422,
+    description: 'Corpo da requisição com dados inválidos',
+  })
   @UseGuards(AuthGuard)
   @Patch(':id')
   async updateQuantity(
@@ -140,6 +284,15 @@ export class CartController {
     return CartController.cartItemToResponse(update);
   }
 
+  @ApiBearerAuth()
+  @ApiResponse({
+    status: 404,
+    description: 'Id não encontrado',
+  })
+  @ApiResponse({
+    status: 204,
+    description: 'Resposta de confirmação da exclusão',
+  })
   @UseGuards(AuthGuard)
   @HttpCode(204)
   @Delete(':id')
@@ -151,6 +304,15 @@ export class CartController {
     await this.deleteCartUseCase.execute({ cart_id, user_id: extractUserId });
   }
 
+  @ApiBearerAuth()
+  @ApiResponse({
+    status: 404,
+    description: 'Id não encontrado',
+  })
+  @ApiResponse({
+    status: 204,
+    description: 'Resposta de confirmação da exclusão',
+  })
   @UseGuards(AuthGuard)
   @HttpCode(204)
   @Delete(':id/item/:itemId')
